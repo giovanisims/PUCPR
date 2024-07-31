@@ -1,0 +1,56 @@
++-------+-------+-----------+
+|   a   |   b   |  a and b  |
+|-------+-------+-----------|
+| True  | True  |   True    |
+| True  | False |   False   |
+| False | True  |   False   |
+| False | False |   False   |
++-------+-------+-----------+
++-------+-------+----------+
+|   a   |   b   |  a or b  |
+|-------+-------+----------|
+| True  | True  |   True   |
+| True  | False |   True   |
+| False | True  |   True   |
+| False | False |  False   |
++-------+-------+----------+
++-------+-------+-------+-------+----------------------+
+|   p   |   q   |   r   |   a   |  a and r or p and q  |
+|-------+-------+-------+-------+----------------------|
+| True  | True  | True  | True  |         True         |
+| True  | True  | True  | False |         True         |
+| True  | True  | False | True  |         True         |
+| True  | True  | False | False |         True         |
+| True  | False | True  | True  |         True         |
+| True  | False | True  | False |        False         |
+| True  | False | False | True  |        False         |
+| True  | False | False | False |        False         |
+| False | True  | True  | True  |         True         |
+| False | True  | True  | False |        False         |
+| False | True  | False | True  |        False         |
+| False | True  | False | False |        False         |
+| False | False | True  | True  |         True         |
+| False | False | True  | False |        False         |
+| False | False | False | True  |        False         |
+| False | False | False | False |        False         |
++-------+-------+-------+-------+----------------------+
++-------+-------+-------+-------+-----------+
+|   p   |   q   |   r   |   a   |  r and a  |
+|-------+-------+-------+-------+-----------|
+| True  | True  | True  | True  |   True    |
+| True  | True  | True  | False |   False   |
+| True  | True  | False | True  |   False   |
+| True  | True  | False | False |   False   |
+| True  | False | True  | True  |   True    |
+| True  | False | True  | False |   False   |
+| True  | False | False | True  |   False   |
+| True  | False | False | False |   False   |
+| False | True  | True  | True  |   True    |
+| False | True  | True  | False |   False   |
+| False | True  | False | True  |   False   |
+| False | True  | False | False |   False   |
+| False | False | True  | True  |   True    |
+| False | False | True  | False |   False   |
+| False | False | False | True  |   False   |
+| False | False | False | False |   False   |
++-------+-------+-------+-------+-----------+

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="pref.css">
+    <title>Map</title>
+</head>
+<body>
+    <div class="container">
+        <div class="menu">
+            <button class="menu-button search" aria-label="Pesquisar">
+                <img src="https://static-00.iconduck.com/assets.00/search-icon-2048x2048-cmujl7en.png" alt="Search Icon">
+                <h2>Pesquisar</h2>
+            </button>
+            <button class="menu-button map" aria-label="Mapa">
+                <img src="https://cdn-icons-png.freepik.com/512/93/93581.png" alt="Map Icon">
+                <h2>Mapa</h2>
+            </button>
+            <button class="menu-button preferences active" aria-label="Preferências">
+                <img src="https://cdn-icons-png.flaticon.com/512/107/107799.png" alt="Preferences Icon">
+                <h2>Preferências</h2>
+            </button>
+            <button class="menu-button saved" aria-label="Salvos">
+                <img src="https://cdn1.iconfinder.com/data/icons/essentials-outline-1/60/Banner-ui-ux-bookmark-bookmarked-512.png" alt="Saved Icon">
+                <h2>Salvos</h2>
+            </button>
+            <button class="menu-button restaurants" aria-label="Restaurantes">
+                <img src="https://cdn-icons-png.flaticon.com/512/3399/3399117.png" alt="Restaurants Icon">
+                <h2>Restaurantes</h2>
+            </button>
+            <button class="menu-button config" aria-label="Configurações">
+                <img src="https://cdn-icons-png.flaticon.com/512/2821/2821378.png" alt="Settings Icon">
+                <h2>Configurações</h2>
+            </button>
+            <button class="menu-button profile" aria-label="Perfil">
+                <img src="https://cdn-icons-png.freepik.com/256/552/552848.png?semt=ais_hybrid" alt="Profile Icon">
+                <h2>Perfil</h2>
+            </button>
+            <h2 class="foodie">Foodie's</h2>
+        </div>
+        <div class="container">
+            <!-- Menu omitted for brevity -->
+            <div class="content">
+                <form id="filters-form">
+                    <div class="filters">
+                        <fieldset>
+                            <legend>Culinárias</legend>
+                            <label class="checkbox-label"><input type="checkbox" name="cuisine" value="italian"> Italiana</label>
+                            <label class="checkbox-label"><input type="checkbox" name="cuisine" value="japanese"> Japonesa</label>
+                            <label class="checkbox-label"><input type="checkbox" name="cuisine" value="chinese"> Chinesa</label>
+                            <label class="checkbox-label"><input type="checkbox" name="cuisine" value="mexican"> Mexicana</label>
+                            <label class="checkbox-label"><input type="checkbox" name="cuisine" value="indian"> Indiana</label>
+                            <label class="checkbox-label"><input type="checkbox" name="cuisine" value="french"> Francesa</label>
+                            <label class="checkbox-label"><input type="checkbox" name="cuisine" value="thai"> Tailandesa</label>
+                            <label class="checkbox-label"><input type="checkbox" name="cuisine" value="greek"> Grega</label>
+                            <label class="checkbox-label"><input type="checkbox" name="cuisine" value="spanish"> Espanhola</label>
+                            <label class="checkbox-label"><input type="checkbox" name="cuisine" value="middle-eastern"> Oriente Médio</label>
+                        </fieldset>
+                        <fieldset>
+                            <legend>Especificidades</legend>
+                            <label class="checkbox-label"><input type="checkbox" name="specificity" value="vegan"> Vegan</label>
+                            <label class="checkbox-label"><input type="checkbox" name="specificity" value="vegetarian"> Vegetariano</label>
+                            <label class="checkbox-label"><input type="checkbox" name="specificity" value="pescatarian"> Pescatariano</label>
+                            <label class="checkbox-label"><input type="checkbox" name="specificity" value="gluten-free"> Sem Glúten</label>
+                            <label class="checkbox-label"><input type="checkbox" name="specificity" value="dairy-free"> Sem Lactose</label>
+                            <label class="checkbox-label"><input type="checkbox" name="specificity" value="halal"> Halal</label>
+                            <label class="checkbox-label"><input type="checkbox" name="specificity" value="kosher"> Kosher</label>
+                            <label class="checkbox-label"><input type="checkbox" name="specificity" value="low-carb"> Baixo Carboidrato</label>
+                            <label class="checkbox-label"><input type="checkbox" name="specificity" value="paleo"> Paleo</label>
+                            <label class="checkbox-label"><input type="checkbox" name="specificity" value="keto"> Keto</label>
+                        </fieldset>
+                    </div>
+                    <div class="price-range">
+                        <label for="price">Preço: </label>
+                        <input type="range" id="price" name="price" min="0" max="100" value="50" oninput="this.nextElementSibling.value = this.value">
+                        <output>50</output>
+                    </div>
+                    <button type="submit">Salvar</button>
+                </form>
+            </div>
+        </div>
+    </body>
+    </html>

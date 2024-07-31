@@ -1,0 +1,79 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
+body {
+    background-color: #ff914d;
+    font-family: "Roboto", sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.header {
+    background-color: #ff914d;
+    color: white;
+    font-family: "Pacifico", cursive;
+    font-size: 25px;
+    padding: 20px;
+    text-align: center;
+    padding-bottom: 0px;
+}
+
+.login {
+    background-color: white;
+    /* border: 3px solid aqua; */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 50px auto;
+    padding: 20px;
+    width: 300px;
+}
+
+.login h1 {
+    font-family: "Roboto";
+    margin-bottom: 20px;
+}
+
+.login label {
+    display: block;
+    margin: 10px 0 5px;
+    font-weight: bold;
+}
+
+.login input {
+    border: 1px solid #ccc;
+    border-radius: 50px;
+    padding: 10px;
+    width: 92%;
+}
+
+.login button {
+    background-color: #ff914d;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+    padding: 10px;
+    width: 100%;
+}
+
+.login button:hover {
+    background-color: #ff7620;
+}
+
+.login a {
+    color: #ff914d;
+    margin-top: 20px;
+    text-decoration: none;
+}
+
+.login a:hover {
+    text-decoration: underline;
+}
+

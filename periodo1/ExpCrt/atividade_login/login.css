@@ -1,0 +1,70 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 400px;
+    height: 300px;
+    justify-content: center;
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.227);
+    background-color: white;
+    font-family: poppins;
+    color: rgb(63, 63, 63);
+    border-radius: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input-field {
+    display: flex;
+    margin-bottom: 20px;
+    flex-direction: column;
+    width: 100%;
+    font-size: 10px;
+}
+
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[name="email"] {
+    margin-bottom: 10px;
+}
+
+form, label, input {
+    margin: 0;
+    padding: 0;
+}
+
+
+input[type="submit"] {
+    font-family: poppins;
+    color: rgb(63, 63, 63);
+    width: 150px;
+    height: 30px;
+    background-color: #22e59a;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+input[type="email"], input[type="password"] {
+    width: 200px;
+    height: 15px;
+    padding: 5px;
+}

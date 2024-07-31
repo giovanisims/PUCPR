@@ -1,0 +1,60 @@
+* {
+    padding: 3px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI';
+    color: #F5F5F5;
+    font-size: 30px;
+    ;
+}
+
+input[type="checkbox"] {
+    vertical-align: middle;
+    transform: scale(3); 
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #000000;
+    background: linear-gradient(45deg, #000000 25%, transparent 25%) -50px 0,
+                linear-gradient(-45deg, #000000 25%, transparent 25%) -50px 0,
+                linear-gradient(45deg, transparent 75%, #000000 75%) 0 0,
+                linear-gradient(-45deg, transparent 75%, #000000 75%) 0 0,
+                linear-gradient(45deg, #2f2f2f 25%, transparent 25%) 0 0,
+                linear-gradient(-45deg, #2f2f2f 25%, transparent 25%) 0 0,
+                linear-gradient(45deg, transparent 75%, #2f2f2f 75%) -50px 0,
+                linear-gradient(-45deg, transparent 75%, #2f2f2f 75%) -50px 0;
+    background-size: 100px 100px;
+    background-color: #000000;
+}
+
+td {
+    line-height:19px;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    border-style: none;
+}
+
+td, th {
+    text-align: center;
+    vertical-align: middle;
+    height: 50px;
+    width: 100px;
+}
+
+td:nth-child(4), th:nth-child(4) {
+    width: 250px; /* Adjust this value to extend the column */
+}
+
+tr:nth-child(even) {
+    background-color: #353535;
+}
+
+tr:nth-child(odd) {
+    background-color: #252525;
+}
