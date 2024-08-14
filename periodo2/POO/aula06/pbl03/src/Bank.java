@@ -1,23 +1,23 @@
 import static java.lang.System.out;
 
 class Client {
-    private String name;
-    private Double balance;
+    final String name;
+    Double balance;
 
-    public Client(String name, double balance) {
+    Client(String name, double balance) {
         this.name = name;
         this.balance = balance;
     }
 
-    public void depositBalance(double amount) {
+    void depositBalance(double amount) {
         this.balance += amount;
     }
 
-    public void withdrawBalance(double amount) {
+    void withdrawBalance(double amount) {
         this.balance -= amount;
     }
 
-    public String getData() {
+    String getData() {
         return ("Nome: " + name + "\nSaldo: " + balance);
     }
 
