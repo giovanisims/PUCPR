@@ -1,6 +1,6 @@
 import static java.lang.System.out;
 
-class Client {
+class   Client {
     final String name;
     Double balance;
 
@@ -18,7 +18,7 @@ class Client {
     }
 
     String getData() {
-        return ("Nome: " + name + "\nSaldo: " + balance);
+        return String.format("Nome: %s | Saldo: %.2f",name , balance);
     }
 
 }
