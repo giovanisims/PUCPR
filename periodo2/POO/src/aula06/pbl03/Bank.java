@@ -1,4 +1,3 @@
-package aula06.pbl03.src;
 
 import static java.lang.System.out;
 

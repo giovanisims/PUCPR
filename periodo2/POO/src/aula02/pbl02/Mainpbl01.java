@@ -1,3 +1,5 @@
+package aula02.pbl02.src;
+
 import java.util.Scanner;
 import java.util.Random;
 

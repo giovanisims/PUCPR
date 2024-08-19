@@ -1,3 +1,5 @@
+package aula04.pbl02B.src;
+
 import java.util.Scanner;
 
 public class Mainpbl02B {
