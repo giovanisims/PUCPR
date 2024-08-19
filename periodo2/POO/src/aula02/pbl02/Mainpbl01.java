@@ -1,4 +1,4 @@
-package aula02.pbl02.src;
+package aula02.pbl02;
 
 import java.util.Scanner;
 import java.util.Random;

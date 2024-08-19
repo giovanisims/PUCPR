@@ -1,4 +1,4 @@
-package aula04.pbl02B.src;
+package aula04.pbl02B;
 
 import java.util.Scanner;
 

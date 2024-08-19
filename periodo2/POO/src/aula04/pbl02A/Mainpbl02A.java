@@ -1,3 +1,5 @@
+package aula04.pbl02A;
+
 import java.util.Scanner;
 import java.lang.Math;
 
