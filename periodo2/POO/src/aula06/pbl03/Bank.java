@@ -1,9 +1,10 @@
 package aula06.pbl03;
+
 import static java.lang.System.out;
 
 class Client {
-    final String name;
-    Double balance;
+    private final String name;
+    private Double balance;
 
     Client(String name, double balance) {
         this.name = name;
@@ -15,11 +16,13 @@ class Client {
     }
 
     void withdrawBalance(double amount) {
-        this.balance -= amount;
+        if (balance > amount) {
+            this.balance -= amount;
+        }
     }
 
     String getData() {
-        return String.format("Nome: %s | Saldo: %.2f",name , balance);
+        return String.format("Nome: %s | Saldo: %.2f", name, balance);
     }
 
 }
