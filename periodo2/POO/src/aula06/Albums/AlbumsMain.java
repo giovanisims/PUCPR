@@ -1,5 +1,3 @@
-package aula06.Albums.src;
-
 public class AlbumsMain {
     public static void main(String[] args) {
         Album album = new Album("Hip-Hop", 2024, "Favorites", "Me");
@@ -25,7 +23,7 @@ class Album {
     int year;
     String name;
     String artist;
-    Music[] songs = new Music[5];
+    public Music[] songs = new Music[5];
 
     Album(String genre, int year, String name, String artist) {
         this.genre = genre;
