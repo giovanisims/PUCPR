@@ -32,7 +32,7 @@ class Employee {
                 this.salary = 5000;
                 break;
             case "Gerenciamento":
-                this.salary = 10000;
+                this.salary = 10000;    
                 break;
         }
 

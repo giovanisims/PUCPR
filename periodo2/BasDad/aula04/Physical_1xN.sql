@@ -2,13 +2,19 @@ DROP DATABASE testebsi;
 CREATE DATABASE TESTEBSI;
 USE TESTEBSI;
 
-/* Lógico_1: */
 
 CREATE TABLE Colaborador (
     Matricula INT PRIMARY KEY,
     Nome VARCHAR(50),
     CPF VARCHAR(20),
     Dt_Nasc DATE
+);
+
+CREATE TABLE Telefone (
+	Telefone VARCHAR(20),
+    fk_Colaborador_Matricula INT,
+    FOREIGN KEY (fk_Colaborador_Matricula)  REFERENCES Colaborador (Matricula),
+    PRIMARY KEY (Telefone, fk_Colaborador_Matricula)
 );
 
 CREATE TABLE Dependente (
