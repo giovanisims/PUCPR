@@ -57,48 +57,113 @@ public class pbl04 {
 
         HashMap<Integer, Book> bookMap = new HashMap<>();
         for (Library library : libraries) {
-            for (Shelf shelf : library.library()) {
-                for (Book book : shelf.shelf()) {
-                    bookMap.put(book.bookID(), book);
+            for (Shelf shelf : library.library) {
+                for (Book book : shelf.shelf) {
+                    bookMap.put(book.bookID, book);
                 }
             }
         }
 
         for (Library library : libraries) {
-            System.out.printf("%s: %n", library.libraryName());
-            for (Shelf shelf : library.library()) {
-                System.out.printf("    %s: %n", shelf.shelfName());
-                for (Book book : shelf.shelf()) {
+            System.out.printf("%s: %n", library.libraryName);
+            for (Shelf shelf : library.library) {
+                System.out.printf("    %s: %n", shelf.shelfName);
+                for (Book book : shelf.shelf) {
                     System.out.printf("        ID: %d | Título: %s | Ano de lançamento: %d | Editora: %s | Autor: %s | Número de páginas: %d | Emprestado: %s%n",
-                            book.bookID(), book.title(), book.year(), book.publisher(), book.author(), book.pages(), book.leased() ? "Sim" : "Não");
+                            book.bookID, book.title, book.year, book.publisher, book.author, book.pages, book.leased ? "Sim" : "Não");
                 }
             }
         }
 
         while (true) {
-            System.out.println("Digite o ID do livro que deseja alugar: ");
-            int choice = sc.nextInt();
-            Book chosenBook = bookMap.get(choice);
-            if (chosenBook != null && !chosenBook.leased()) {
-                System.out.printf("Título do livro escolhido: %s%n", chosenBook.title());
-                break;
-            } else {
-                System.out.println("ID inválido, ou o livro está alugado");
+            System.out.println("""
+                    ********* Menu *********
+                    (1) Alugar um livro  
+                    (2) Devolver um livro  
+                    (3) Sair  
+                    """);
+            System.out.print("Opção: ");
+            int option = sc.nextInt();
+
+            switch (option) {
+                case 1:
+                    System.out.println("Digite o ID do livro que deseja alugar: ");
+                    int choice = sc.nextInt();
+                    Book chosenBook = bookMap.get(choice);
+                    if (chosenBook != null && !chosenBook.leased) {
+                        System.out.printf("Título do livro escolhido: %s%n", chosenBook.title);
+                        chosenBook.leased = true;
+                    } else {
+                        System.out.println("ID inválido, ou o livro está alugado");
+                    }
+                    break;
+                case 2:
+                    System.out.println("Digite o ID do livro que deseja devolver: ");
+                    int returnChoice = sc.nextInt();
+                    Book returnBook = bookMap.get(returnChoice);
+                    if (returnBook != null && returnBook.leased) {
+                        System.out.printf("Título do livro devolvido: %s%n", returnBook.title);
+                        returnBook.leased = false;
+                    } else {
+                        System.out.println("ID inválido, ou o livro não está alugado");
+                    }
+                    break;
+                case 3:
+                    System.out.println("Saindo...");
+                    sc.close();
+                    return;
+                default:
+                    System.out.println("Opção Inválida. Tente novamente.");
+                    break;
             }
         }
     }
 }
 
-record Book(int bookID, String title, int year, String publisher, String author, int pages, Boolean leased) {}
+class Book {
+    public int bookID;
+    public String title;
+    public int year;
+    public String publisher;
+    public String author;
+    public int pages;
+    public Boolean leased;
 
-record Shelf(ArrayList<Book> shelf, String shelfName) {
-    void addBook(Book book) {
+    public Book(int bookID, String title, int year, String publisher, String author, int pages, Boolean leased) {
+        this.bookID = bookID;
+        this.title = title;
+        this.year = year;
+        this.publisher = publisher;
+        this.author = author;
+        this.pages = pages;
+        this.leased = leased;
+    }
+}
+
+class Shelf {
+    public final ArrayList<Book> shelf;
+    public final String shelfName;
+
+    public Shelf(ArrayList<Book> shelf, String shelfName) {
+        this.shelf = shelf;
+        this.shelfName = shelfName;
+    }
+
+    public void addBook(Book book) {
         shelf.add(book);
     }
 }
 
-record Library(ArrayList<Shelf> library, String libraryName) {
-    void addShelf(Shelf shelf) {
+class Library {
+    public final ArrayList<Shelf> library;
+    public final String libraryName;
+
+    public Library(ArrayList<Shelf> library, String libraryName) {
+        this.library = library;
+        this.libraryName = libraryName;
+    }
+
+    public void addShelf(Shelf shelf) {
         library.add(shelf);
     }
 }
