@@ -1,8 +1,6 @@
 __pycache__/
 *.py[cod]
 *$py.class
-BrModelo/brModelo.jar
-/BrModelo
 .idea/git_toolbox_blame.xml
 .idea/misc.xml
 .idea/modules.xml
