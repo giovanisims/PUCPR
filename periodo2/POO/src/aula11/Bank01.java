@@ -117,7 +117,7 @@ class SavingsAccount extends Account{
     }
 
     public boolean depositInterest(double value) {
-        return true;
+        return value > 0;
     }
 
     @Override
@@ -135,8 +135,9 @@ class CheckingAccount extends Account{
     }
 
     public boolean debitMaintenance(double value) {
-        return true;
+        return value < getBalance();
     }
+
     @Override
     public String toString() {
         return String.format("Nome: %s | ID: %d | Data de criação: %s | Saldo: %.2f %n",

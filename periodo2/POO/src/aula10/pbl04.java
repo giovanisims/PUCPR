@@ -78,9 +78,9 @@ public class pbl04 {
         while (true) {
             System.out.println("""
                     ********* Menu *********
-                    (1) Alugar um livro  
-                    (2) Devolver um livro  
-                    (3) Sair  
+                    (1) Alugar um livro
+                    (2) Devolver um livro
+                    (3) Sair
                     """);
             System.out.print("Opção: ");
             int option = sc.nextInt();
