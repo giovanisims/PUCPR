@@ -28,19 +28,19 @@ public class pbl05 {
         Monitor monitor1 = new Monitor("Leo", 24, "leo@example.com", 20);
 
         // Makes list of everyone
-        ArrayList<Person> employees = new ArrayList<>();
-        employees.add(student1);
-        employees.add(student2);
-        employees.add(student3);
-        employees.add(student4);
-        employees.add(teacher1);
-        employees.add(teacher2);
-        employees.add(employee1);
-        employees.add(employee2);
-        employees.add(employee3);
-        employees.add(employee4);
-        employees.add(employee5);
-        employees.add(monitor1);
+        ArrayList<Person> payroll = new ArrayList<>();
+        payroll.add(student1);
+        payroll.add(student2);
+        payroll.add(student3);
+        payroll.add(student4);
+        payroll.add(teacher1);
+        payroll.add(teacher2);
+        payroll.add(employee1);
+        payroll.add(employee2);
+        payroll.add(employee3);
+        payroll.add(employee4);
+        payroll.add(employee5);
+        payroll.add(monitor1);
 
         while (true) {
             System.out.println("""
@@ -50,18 +50,28 @@ public class pbl05 {
                     """);
             System.out.print("Opção: ");
             int option = sc.nextInt();
-            sc.nextLine(); // Consume newline
+            sc.nextLine();
 
             switch (option) {
                 case 1:
                     System.out.print("Digite o nome do funcionário: ");
                     String name = sc.nextLine();
-                    System.out.printf("Tem certeza que deseja ver os detalhes de: %s%n", name);
-                    String confirmation = sc.nextLine();
-                    if (confirmation.equalsIgnoreCase("sim")) {
-                        displayEmployeeDetails(employees, name);
-                    } else {
-                        System.out.println("Voltando...");
+                    boolean validInput = false;
+                    while (!validInput) {
+                        System.out.printf("Te certeza que deseja ver os dados do(a) %s? ", name);
+                        String confirmation = sc.nextLine().toLowerCase();
+                        switch (confirmation) {
+                            case "sim":
+                                displayEmployeeDetails(payroll, name);
+                                validInput = true;
+                                break;
+                            case "não":
+                                validInput = true;
+                                break;
+                            default:
+                                System.out.println("Digite Sim ou Não");
+                                break;
+                        }
                     }
                     break;
                 case 2:
@@ -75,8 +85,8 @@ public class pbl05 {
         }
     }
 
-    public static void displayEmployeeDetails(ArrayList<Person> employees, String name) {
-        for (Person employee : employees) {
+    public static void displayEmployeeDetails(ArrayList<Person> payroll, String name) {
+        for (Person employee : payroll) {
             if (employee.getName().equalsIgnoreCase(name)) {
                 System.out.println(employee);
                 return;
@@ -85,6 +95,7 @@ public class pbl05 {
         System.out.println("Funcionário não encontrado.");
     }
 }
+
 
 class Person {
     private final String name;
