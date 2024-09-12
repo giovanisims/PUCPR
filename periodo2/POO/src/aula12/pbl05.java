@@ -86,7 +86,7 @@ public class pbl05 {
         Employee employee5 = new Employee("Karen", 29, "karen@example.com", "Cafeteria", 40, 12.0);
 
         // Creating Monitor
-        Monitor monitor1 = new Monitor("Leo", 24, "leo@example.com", 20);
+        Monitor monitor1 = new Monitor("Leo", 24, "leo@example.com", "S005", "Engineering", 20);
 
         // Makes list of everyone
         ArrayList<Person> payroll = new ArrayList<>();
@@ -130,7 +130,7 @@ class Person {
     protected final String email;
     protected int age;
 
-    protected Person(String name, int age, String email) {
+    Person(String name, int age, String email) {
         this.name = name;
         this.age = age;
         this.email = email;
@@ -140,23 +140,25 @@ class Person {
         return name;
     }
 
+    @Override
     public String toString() {
         return String.format("Nome: %s | Idade: %d | Email: %s", this.name, this.age, this.email);
     }
 }
 
 class Student extends Person {
-    private final String studentID;
-    private final String course;
+    protected final String studentID;
+    protected final String subject;
 
     Student(String name, int age, String email, String studentID, String subject) {
         super(name, age, email);
         this.studentID = studentID;
-        this.course = subject;
+        this.subject = subject;
     }
 
+    @Override
     public String toString() {
-        return String.format(super.toString(), "Matriucula: %s | Curso: %s ", this.studentID, this.course);
+        return super.toString() + String.format(" | Matricula: %s | Curso: %s", this.studentID, this.subject);
     }
 }
 
@@ -170,8 +172,9 @@ class Teacher extends Person {
         this.subject = subject;
     }
 
+    @Override
     public String toString() {
-        return String.format(super.toString(), "Disciplina: %s | Salario: %s ", this.subject, this.salary);
+        return super.toString() + String.format(" | Disciplina: %s | Salario: %.2f", this.subject, this.salary);
     }
 
     public String bonus() {
@@ -191,24 +194,30 @@ class Employee extends Person {
         this.workSalary = workSalary;
     }
 
+    @Override
+    public String toString() {
+        return super.toString() + String.format(" | Departamento: %s | Horas de trabalho: %d | Salário por hora: %.2f", this.department, this.workHours, this.workSalary);
+    }
+
     public String calculatePayment() {
-        return String.format("Departamento: %s | O pagamento é: %.2f", this.department, this.workHours * this.workSalary);
+        return String.format("O pagamento é: %.2f", this.workHours * this.workSalary);
     }
 }
 
-class Monitor extends Person {
+class Monitor extends Student {
     private final int workHours;
 
-    Monitor(String name, int age, String email, int monitorHours) {
-        super(name, age, email);
+    Monitor(String name, int age, String email, String studentID, String subject, int monitorHours) {
+        super(name, age, email, studentID, subject);
         this.workHours = monitorHours;
     }
 
+    @Override
     public String toString() {
-        return String.format(super.toString(), "Horas de monitoria: %.2f", this.workHours);
+        return super.toString() + String.format(" | Horas de monitoria: %d", this.workHours);
     }
 
     public String calculatePayment() {
-        return String.format("O pagamento é: %x", this.workHours * 30);
+        return String.format("O pagamento é: %.2f", this.workHours * 30.0);
     }
 }
