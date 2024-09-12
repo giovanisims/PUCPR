@@ -8,6 +8,67 @@ public class pbl05 {
         Scanner sc = new Scanner(System.in);
 
         // Creating Students
+        ArrayList<Person> payroll = getPeople();
+
+        for (Person p : payroll){
+            System.out.println(p.getName());
+        }
+
+        while (true) {
+            System.out.println("""
+                    
+                    ********* Menu *********
+                    (1) Ver detalhes do funcionário
+                    (2) Sair
+                    """);
+            System.out.print("Opção: ");
+            int option = sc.nextInt();
+            sc.nextLine();
+
+            switch (option) {
+                case 1:
+                    System.out.print("Digite o nome do funcionário: ");
+                    String name = sc.nextLine();
+                    if (!isNameInList(payroll, name)) {
+                        System.out.println("Funcionário não encontrado.");
+                        break;
+                    }
+
+                    boolean validInput = false;
+                    while (!validInput) {
+                        System.out.printf("Te certeza que deseja ver os dados do(a) %s? ", name);
+                        String confirmation = sc.nextLine().toLowerCase();
+                        switch (confirmation) {
+                            case "sim":
+                                displayEmployeeDetails(payroll, name);
+                                validInput = true;
+                                break;
+                            case "não":
+                                validInput = true;
+                                break;
+                            default:
+                                System.out.println("Digite Sim ou Não");
+                                break;
+                        }
+                    }
+
+                    break;
+
+
+                case 2:
+                    System.out.println("Saindo...");
+                    sc.close();
+                    return;
+
+
+                default:
+                    System.out.println("Opção Inválida. Tente novamente.");
+                    break;
+            }
+        }
+    }
+
+    private static ArrayList<Person> getPeople() {
         Student student1 = new Student("Alice", 20, "alice@example.com", "S001", "Computer Science");
         Student student2 = new Student("Bob", 22, "bob@example.com", "S002", "Mathematics");
         Student student3 = new Student("Charlie", 21, "charlie@example.com", "S003", "Physics");
@@ -41,66 +102,33 @@ public class pbl05 {
         payroll.add(employee4);
         payroll.add(employee5);
         payroll.add(monitor1);
-
-        while (true) {
-            System.out.println("""
-                    ********* Menu *********
-                    (1) Ver detalhes do funcionário
-                    (2) Sair
-                    """);
-            System.out.print("Opção: ");
-            int option = sc.nextInt();
-            sc.nextLine();
-
-            switch (option) {
-                case 1:
-                    System.out.print("Digite o nome do funcionário: ");
-                    String name = sc.nextLine();
-                    boolean validInput = false;
-                    while (!validInput) {
-                        System.out.printf("Te certeza que deseja ver os dados do(a) %s? ", name);
-                        String confirmation = sc.nextLine().toLowerCase();
-                        switch (confirmation) {
-                            case "sim":
-                                displayEmployeeDetails(payroll, name);
-                                validInput = true;
-                                break;
-                            case "não":
-                                validInput = true;
-                                break;
-                            default:
-                                System.out.println("Digite Sim ou Não");
-                                break;
-                        }
-                    }
-                    break;
-                case 2:
-                    System.out.println("Saindo...");
-                    sc.close();
-                    return;
-                default:
-                    System.out.println("Opção Inválida. Tente novamente.");
-                    break;
-            }
-        }
+        return payroll;
     }
 
     public static void displayEmployeeDetails(ArrayList<Person> payroll, String name) {
         for (Person employee : payroll) {
             if (employee.getName().equalsIgnoreCase(name)) {
                 System.out.println(employee);
-                return;
             }
         }
-        System.out.println("Funcionário não encontrado.");
     }
+
+    public static boolean isNameInList(ArrayList<Person> payroll, String name) {
+        for (Person employee : payroll) {
+            if (employee.getName().equalsIgnoreCase(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
 
 
 class Person {
-    private final String name;
-    private int age;
-    private final String email;
+    protected final String name;
+    protected final String email;
+    protected int age;
 
     protected Person(String name, int age, String email) {
         this.name = name;
