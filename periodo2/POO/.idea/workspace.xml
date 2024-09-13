@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8d713824-a183-4982-aa93-ac6fb392ea78" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/aula12/pbl05.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/aula12/pbl05.java" afterDir="false" />
-    </list>
+    <list default="true" id="8d713824-a183-4982-aa93-ac6fb392ea78" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -66,6 +63,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/g10s1/Documents/PUCPR",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -123,7 +121,7 @@
       <workItem from="1724800708008" duration="17195000" />
       <workItem from="1724975545349" duration="2041000" />
       <workItem from="1725404513263" duration="1798000" />
-      <workItem from="1725839179608" duration="14272000" />
+      <workItem from="1725839179608" duration="14668000" />
     </task>
     <servers />
   </component>
