@@ -45,34 +45,34 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.AlbumsMain2.executor": "Run",
-    "Application.Animal01.executor": "Run",
-    "Application.App.executor": "Run",
-    "Application.Bank.executor": "Run",
-    "Application.Bank01.executor": "Run",
-    "Application.Main.executor": "Run",
-    "Application.Objects.executor": "Run",
-    "Application.Property01.executor": "Run",
-    "Application.Strings.executor": "Run",
-    "Application.pbl03.executor": "Run",
-    "Application.pbl03b.executor": "Run",
-    "Application.pbl04.executor": "Run",
-    "Application.pbl05.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/g10s1/Documents/PUCPR",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.AlbumsMain2.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Animal01.executor&quot;: &quot;Run&quot;,
+    &quot;Application.App.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Bank.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Bank01.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Objects.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Property01.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Strings.executor&quot;: &quot;Run&quot;,
+    &quot;Application.pbl03.executor&quot;: &quot;Run&quot;,
+    &quot;Application.pbl03b.executor&quot;: &quot;Run&quot;,
+    &quot;Application.pbl04.executor&quot;: &quot;Run&quot;,
+    &quot;Application.pbl05.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/g10s1/Documents/PUCPR&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="Animal01" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="aula11.Animal01" />
@@ -96,8 +96,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-b114ca120d71-intellij.indexing.shared.core-IU-242.21829.40" />
-        <option value="bundled-js-predefined-d6986cc7102b-7c0b70fcd90d-JavaScript-IU-242.21829.40" />
+        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.23339.11" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.23339.11" />
       </set>
     </attachedChunks>
   </component>
@@ -122,6 +122,7 @@
       <workItem from="1724975545349" duration="2041000" />
       <workItem from="1725404513263" duration="1798000" />
       <workItem from="1725839179608" duration="14668000" />
+      <workItem from="1727831307136" duration="24000" />
     </task>
     <servers />
   </component>
