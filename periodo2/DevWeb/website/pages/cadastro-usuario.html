@@ -29,10 +29,10 @@
             var dataValue = document.getElementById('data').value;
             var estadoValue = document.getElementById('estado').value;
 
-            console.log(nome);
-            console.log(email);
-            console.log(data);
-            console.log(estado);
+            document.getElementById('content').innerHTML = nomeValue
+
+            var sql = "insert into usuarios (nome) values ('" + nome + "')";
+            console.log(sql);
 
             var data = {
                 'nome': nome,
@@ -97,6 +97,10 @@
 
             <button type="button" onclick="return salvar();" class="btn btn-primary">Salvar</button>
         </form>
+
+        <div id="content">
+
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
