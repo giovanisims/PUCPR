@@ -5,6 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8d713824-a183-4982-aa93-ac6fb392ea78" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../../BrModelo/BanDad/Alt-F4/Conceitual_2.brM3" beforeDir="false" afterPath="$PROJECT_DIR$/../../BrModelo/BanDad/Alt-F4/Conceitual_2.brM3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../BrModelo/BanDad/Alt-F4/Lógico_2.brM3" beforeDir="false" afterPath="$PROJECT_DIR$/../../BrModelo/BanDad/Alt-F4/Lógico_2.brM3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MatDis/01-10-2024/mat_dis2.py" beforeDir="false" afterPath="$PROJECT_DIR$/../MatDis/01-10-2024/mat_dis2.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -58,6 +61,7 @@
     "Application.Comida.executor": "Run",
     "Application.Main.executor": "Run",
     "Application.Objects.executor": "Run",
+    "Application.PBL07.executor": "Run",
     "Application.Property01.executor": "Run",
     "Application.Sports.executor": "Run",
     "Application.Strings.executor": "Run",
@@ -130,6 +134,7 @@
       <workItem from="1727831307136" duration="24000" />
       <workItem from="1727910560209" duration="554000" />
       <workItem from="1727911150472" duration="3472000" />
+      <workItem from="1728520254474" duration="3074000" />
     </task>
     <servers />
   </component>
