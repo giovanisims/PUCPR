@@ -28,6 +28,8 @@ public class PBL07 {
         goldfinger.run(20.0f, 30.0f);
         goldfinger.leap(10.0f);
         goldfinger.shoot();
+        goldfinger.personify(batman);
+        goldfinger.personify(jamesBond);
 
         drNo.run(18.0f, 28.0f);
         drNo.leap(9.0f);
