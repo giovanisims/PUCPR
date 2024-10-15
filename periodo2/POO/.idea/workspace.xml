@@ -4,7 +4,64 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8d713824-a183-4982-aa93-ac6fb392ea78" name="Changes" comment="" />
+    <list default="true" id="8d713824-a183-4982-aa93-ac6fb392ea78" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../../BrModelo/BanDad/Alt-F4/Conceitual_2.brM3" beforeDir="false" afterPath="$PROJECT_DIR$/../../BrModelo/BanDad/Alt-F4/Conceitual_2.brM3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../BrModelo/BanDad/Alt-F4/Lógico_2.brM3" beforeDir="false" afterPath="$PROJECT_DIR$/../../BrModelo/BanDad/Alt-F4/Lógico_2.brM3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/.prettierrc.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/bin/nodemon.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/bin/windows-kill.exe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/doc/cli/authors.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/doc/cli/config.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/doc/cli/help.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/doc/cli/logo.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/doc/cli/options.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/doc/cli/topics.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/doc/cli/usage.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/doc/cli/whoami.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/index.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/jsconfig.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/lib/cli/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/lib/cli/parse.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/lib/config/command.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/lib/config/defaults.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/lib/config/exec.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/lib/config/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/lib/config/load.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/lib/help/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/lib/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/lib/monitor/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/lib/monitor/match.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/lib/monitor/run.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/lib/monitor/signals.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/lib/monitor/watch.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/lib/nodemon.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/lib/rules/add.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/lib/rules/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/lib/rules/parse.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/lib/spawn.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/lib/utils/bus.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/lib/utils/clone.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/lib/utils/colour.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/lib/utils/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/lib/utils/log.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/lib/utils/merge.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/lib/version.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/node_modules/debug/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/node_modules/debug/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/node_modules/debug/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/node_modules/debug/src/browser.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/node_modules/debug/src/common.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/node_modules/debug/src/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/node_modules/debug/src/node.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/node_modules/ms/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/node_modules/ms/license.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/node_modules/ms/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/node_modules/ms/readme.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DevWeb/website/node_modules/nodemon/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -129,7 +186,7 @@
       <workItem from="1727831307136" duration="24000" />
       <workItem from="1727910560209" duration="554000" />
       <workItem from="1727911150472" duration="3472000" />
-      <workItem from="1728520254474" duration="3375000" />
+      <workItem from="1728520254474" duration="4749000" />
     </task>
     <servers />
   </component>
