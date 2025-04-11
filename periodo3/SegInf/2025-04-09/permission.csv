@@ -1,0 +1,5 @@
+username,password,file,read,write,delete,run
+admin,admin,file,1,1,1,1
+noperm,noperm,file,0,0,0,0
+admin,admin,file2,1,1,1,1
+space,space,space,1,1,1,1
