@@ -1,3 +1,7 @@
 username,file,read,write,delete,run
 admin,file,1,1,1,1
 noperm,placeholder,0,0,0,0
+test,placeholder,1,0,0,0
+test2,placeholder,0,1,0,0
+test3,placeholder,0,0,1,0
+test4,placeholder,0,0,0,1
