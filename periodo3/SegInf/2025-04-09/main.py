@@ -1,3 +1,6 @@
+# Giovani Nota Simões
+# Livia 
+
 import csv
 
 def filemanager(username):
@@ -22,6 +25,8 @@ Select a command:
                 checkaccess(username, int(choice))
             case '5':
                 return
+            case _:
+                print('Invalid Option')
 
 def checkaccess(username, choice):
     filename = input('Input the filename: ').strip()
