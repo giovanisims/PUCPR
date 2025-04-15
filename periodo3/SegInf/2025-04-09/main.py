@@ -20,15 +20,25 @@ Select a command:
     1 - Read  
     2 - Write  
     3 - Delete  
-    4 - Run  
-    5 - Exit 
+    4 - Run
+    5 - List Files
+    6 - Exit 
 ''')
         if choice in ['1','2','3','4']:
             checkaccess(username, int(choice))
         elif choice == '5':
+            list_files()
+        elif choice == '6':
             return
         else:
             print('Invalid Option')
+
+def list_files():
+    """Lists files in the current directory."""
+    import os
+    files = os.listdir()
+    for file in files:
+        print(file)
 
 def checkaccess(username, choice):
     """
