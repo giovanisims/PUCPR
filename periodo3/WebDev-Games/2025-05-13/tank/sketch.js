@@ -3,26 +3,26 @@ function desenharTanque(x, y, rotacao, rotacaoTorre) {
     translate(x, y);
     rotate(rotacao);
   
-    rectMode(CENTER); // Definir rectMode uma vez no início
+    rectMode(CENTER); 
 
     // Corpo do tanque
-    fill(50, 80, 50); // Verde escuro
-    rect(0, 0, 60, 40); // Retângulo principal do corpo
+    fill(50, 80, 50); 
+    rect(0, 0, 60, 40); 
   
     // Esteiras
-    fill(40); // Cinza escuro para esteiras
-    rect(0, 25, 70, 10); // Esteira esquerda
-    rect(0, -25, 70, 10); // Esteira esquerda
+    fill(40); 
+    rect(0, 25, 70, 10); 
+    rect(0, -25, 70, 10); 
   
     // Torre
     push();
     rotate(rotacaoTorre);
-    fill(80, 120, 80); // Verde um pouco mais claro para a torre
-    rect(0, 0, 40, 30); // Base da torre
+    fill(80, 120, 80); 
+    rect(0, 0, 40, 30); 
   
-    // Canhão
-    fill(60); // Cinza para o canhão
-    rect(20, 0, 40, 8); // Canhão (ajustei a posição x para sair da torre)
+    // Arma
+    fill(60); 
+    rect(20, 0, 40, 8);
     pop();
   
     pop();
@@ -35,7 +35,7 @@ function desenharTanque(x, y, rotacao, rotacaoTorre) {
  
    function setup() {
      createCanvas(400, 400);
-     angleMode(DEGREES); // Usar graus para rotação
+     angleMode(DEGREES); 
      tanqueX = width / 2;
      tanqueY = height / 2;
      tanqueRotacao = 0;
