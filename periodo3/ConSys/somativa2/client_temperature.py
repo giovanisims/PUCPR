@@ -1,5 +1,7 @@
 import socket
 import time
+import random
+import threading
 
 def start_client():
 
@@ -18,11 +20,13 @@ def start_client():
 
         while True:
 
-            message = input('Input test message: ')
+            # message = input('Input test message: ')
             
-            if message.lower() == "exit":
-                exit()
+            # if message.lower() == "exit":
+            #     exit()
             
+            message = f"The temperature currently is {random.randint(15,30)}°C"
+
             # The send function expects bytes so we encode it
             # UTF-8 (or 16 if we just wanna waste bandwith) works with everything but is a little slower
             # ASCII can be used for only english characters and basic puctuation (and a "del" character???)
@@ -35,6 +39,8 @@ def start_client():
             # 1024 is the max byte size of the response, you can use a file or preload it but here it doesnt matter
             response = client_socket.recv(1024).decode('utf-8')
             print(f"Received this response: {response}")
+
+            time.sleep(2)
 
     except ConnectionRefusedError:
         print("Failed to connect to server")
@@ -50,10 +56,29 @@ def start_client():
         print("Connection closed")
 
 def main ():
-    for i in range(3):
-        start_client()
-        print(f"Attempting to connect to the server for the {i+1} time...")
-        time.sleep(3)
+    sensors_amount = 5
+    sensors = []
+
+    for thread in range(sensors_amount):
+        client_thread = threading.Thread(
+            target=start_client,
+            name=f"Sensor {thread+1}"
+        )
+
+        # Without daemon threads Ctrl+C doesn't work properly
+        client_thread.daemon=True
+        sensors.append(client_thread)
+        client_thread.start()
+        print(f"Started: {client_thread.name}")
+
+    try:
+        # I am aware this try except is "redundant" but it keeps the threads alive and allows for easy shutdown
+        while True:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        print("\nShutting down all clients")
+
+
 
 if __name__ == "__main__":
     main()

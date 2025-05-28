@@ -1,4 +1,5 @@
 import socket
+import threading
 
 def handle_client(client_socket, address):
     print(f"Successfully conected to socket: {address}")
@@ -45,6 +46,7 @@ def start_server():
 
     try:
         while True:
+            i =+ 1
             '''
             Alright this one is a bit rough, since I'm using TCP I cant respond to the client using its own sockets
             (i.e. you cant send the response back to the client using just 123.123.123.123:1234) this works in UDP.
@@ -65,7 +67,15 @@ def start_server():
             client_socket, address = server_socket.accept()
 
             # I want to acknowledge that I know calling other functions inside of one functions is bad but this works really well
-            handle_client(client_socket, address)
+            client_thread = threading.Thread(
+                target=handle_client,
+                args=(client_socket, address)
+            )
+
+            # This turns the normal thread into a daemon thread, i.e. Doesnt prevent the program from exiting if still active
+            client_thread.daemon=True
+            client_thread.start()
+
 
     except KeyboardInterrupt:
         print("\nServer shutting down...")
