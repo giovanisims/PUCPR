@@ -48,7 +48,7 @@ def handle_client(client_socket, address):
                         with data_lock:
                             response += f"You have {len(SENSORS)} sensors: \n"
                             for sensor_name in SENSORS:
-                                response += f"{sensor_name} running on socket: {address_str}\n"
+                                response += f"{sensor_name} running\n"
                     case "2":
                         print(f"Sending average temperatures per socket")
                         with data_lock:
