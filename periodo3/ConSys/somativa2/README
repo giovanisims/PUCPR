@@ -1,0 +1,15 @@
+Projeto 1: Monitoramento de Temperatura em Ambientes IoT
+
+Descrição: Sensores de temperatura (clientes) enviam leituras periódicas para um servidor central, que armazena os dados e permite consultas em tempo real.
+
+Requisitos: Cada cliente simula um sensor e envia dados com um timestamp. O servidor deve aceitar múltiplas conexões simultâneas e registrar os dados.
+Um cliente especial (painel de controle) pode consultar a média de temperatura por sensor. 
+
+# ========== Multithreading ========== 
+
+## Quando usar Threads?
+
+1.  Quando for vantajoso executar partes de um programa (funções) em paralelo.
+2.  Quando for necessário compartilhar variáveis entre as funções que rodam em paralelo.
+3.  Quando for necessário criar dinamicamente muitas vezes a mesma instância de uma função.
+    * Dependendo do sistema, criar uma Thread pode ser de 10 a 100 vezes mais rápido que criar um processo.
