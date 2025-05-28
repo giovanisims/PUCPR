@@ -28,7 +28,9 @@ def start_client(all_sensors_connected):
             # if message.lower() == "exit":
             #     exit()
             
-            message = f"{threading.current_thread().name}: The temperature currently is {random.randint(15,30)}°C"
+            current_temperature = random.randint(15,30)
+            thread_name = threading.current_thread().name
+            message = f"{thread_name}|{current_temperature}"
 
             # The send function expects bytes so we encode it
             # UTF-8 (or 16 if we just wanna waste bandwith) works with everything but is a little slower
@@ -36,7 +38,7 @@ def start_client(all_sensors_connected):
             # latin-1 is ASCII but it also supports accents like á, õ, ü (Just use UTF this method is bad)
             
             client_socket.send(message.encode('utf-8'))
-            print(f"{threading.current_thread().name} successfully sent this message: {message}")
+            print(f"{threading.current_thread().name} successfully sent this temperature: {current_temperature}°C")
 
             # You use recv to receive responses for TCP and recvfrom for UDP dont know why
             # 1024 is the max byte size of the response, you can use a file or preload it but here it doesnt matter
@@ -79,7 +81,7 @@ def main ():
     
     # Time for threads to connect
 
-    # Changes the event to set so that the threads can run normally after the y all connect
+    # Changes the event to set so that the threads can run normally after they all connect
     all_sensors_connected.set()
 
     try:
@@ -87,7 +89,7 @@ def main ():
         while True:
             pass
     except KeyboardInterrupt:
-        print("\nShutting down all clients")
+        print("\nShutting down all clients...")
 
 
 
