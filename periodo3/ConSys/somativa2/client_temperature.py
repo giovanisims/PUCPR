@@ -20,6 +20,7 @@ def start_client():
 
         while True:
 
+            time.sleep(3)
             # message = input('Input test message: ')
             
             # if message.lower() == "exit":
@@ -40,8 +41,6 @@ def start_client():
             response = client_socket.recv(1024).decode('utf-8')
             print(f"Received this response: {response}")
 
-            time.sleep(2)
-
     except ConnectionRefusedError:
         print("Failed to connect to server")
     except KeyboardInterrupt:
@@ -54,6 +53,7 @@ def start_client():
         # Your OS will usually clean up the zombies anyway but this is good practice
         client_socket.close()
         print("Connection closed")
+
 
 def main ():
     sensors_amount = 5
@@ -72,9 +72,9 @@ def main ():
         print(f"Started: {client_thread.name}")
 
     try:
-        # I am aware this try except is "redundant" but it keeps the threads alive and allows for easy shutdown
+        # I have no clue why but, I need this try except otherwise the threads don't function properly
         while True:
-            time.sleep(1)
+            pass
     except KeyboardInterrupt:
         print("\nShutting down all clients")
 
