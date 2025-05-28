@@ -1,10 +1,9 @@
 import socket
-import threading
-import time
 
 def start_admin_panel():
     host = "127.0.0.1"
     port = 8888
+
     # Your OS usually handles client ports automatically, by using "ephemeral ports" however, since we want to treat this client differently we use a static port
     local_port = 10000
 
@@ -24,6 +23,7 @@ def start_admin_panel():
 [1] - See active sensors
 [2] - Temperature averages for each sensor
 [3] - Quit
+===================================
 ''')
             match option:
                 case "1":
@@ -34,6 +34,8 @@ def start_admin_panel():
                     raise KeyboardInterrupt
                 case _:
                     print("Invalid option")
+                    continue
+            
             print(admin_panel_socket.recv(1024).decode('utf-8'))
     except KeyboardInterrupt:
         print("Control panel shutting down...")
