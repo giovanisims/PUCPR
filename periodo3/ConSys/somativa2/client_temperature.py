@@ -3,7 +3,7 @@ import time
 import random
 import threading
 
-def start_client():
+def start_client(all_sensors_connected):
 
     # The default client socket object is created with AF_INET which is for IPV4 and, AF_INET6 for IPV6.
     # By default it also uses SOCK_STREAM which is for TCP, for UDP its SOCK_DGRAM
@@ -14,19 +14,21 @@ def start_client():
 
     try:
 
-        # They really chose to do it with a tuple twice huh
+        # They really chose to go with a tuple twice huh
         client_socket.connect((host, port))
-        print(f"Server connected on socket: {host}:{port} ")
+        print(f"{threading.current_thread().name}: connected to server at: {host}:{port} ")
+
+        # This pauses the current thread's execution until I "set" this event
+        all_sensors_connected.wait()
+
 
         while True:
-
-            time.sleep(3)
             # message = input('Input test message: ')
             
             # if message.lower() == "exit":
             #     exit()
             
-            message = f"The temperature currently is {random.randint(15,30)}°C"
+            message = f"{threading.current_thread().name}: The temperature currently is {random.randint(15,30)}°C"
 
             # The send function expects bytes so we encode it
             # UTF-8 (or 16 if we just wanna waste bandwith) works with everything but is a little slower
@@ -34,12 +36,14 @@ def start_client():
             # latin-1 is ASCII but it also supports accents like á, õ, ü (Just use UTF this method is bad)
             
             client_socket.send(message.encode('utf-8'))
-            print(f"Successfully sent this message: {message}")
+            print(f"{threading.current_thread().name} successfully sent this message: {message}")
 
             # You use recv to receive responses for TCP and recvfrom for UDP dont know why
             # 1024 is the max byte size of the response, you can use a file or preload it but here it doesnt matter
             response = client_socket.recv(1024).decode('utf-8')
             print(f"Received this response: {response}")
+
+            time.sleep(1)
 
     except ConnectionRefusedError:
         print("Failed to connect to server")
@@ -57,19 +61,26 @@ def start_client():
 
 def main ():
     sensors_amount = 5
-    sensors = []
+    all_sensors_connected = threading.Event()
 
-    for thread in range(sensors_amount):
+    for i in range(sensors_amount):
         client_thread = threading.Thread(
             target=start_client,
-            name=f"Sensor {thread+1}"
+            # They really love their tuples huh
+            args=(all_sensors_connected,),
+            name=f"Sensor {i+1}"
         )
 
         # Without daemon threads Ctrl+C doesn't work properly
         client_thread.daemon=True
-        sensors.append(client_thread)
         client_thread.start()
         print(f"Started: {client_thread.name}")
+        time.sleep(1)
+    
+    # Time for threads to connect
+
+    # Changes the event to set so that the threads can run normally after the y all connect
+    all_sensors_connected.set()
 
     try:
         # I have no clue why but, I need this try except otherwise the threads don't function properly

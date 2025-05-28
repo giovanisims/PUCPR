@@ -31,16 +31,16 @@ def start_server():
     # Server socket object
     server_socket = socket.socket()
 
-    # We use this since TCP takes a few minutes to unlock a port after you stop using it so restarting is a pain
+    # We change these settings because TCP takes a few minutes to unlock a port after you stop using it so restarting is a pain
     # SOL_SOCKET is because we are setting configuring at socket-level rather than protocol-level
     # SO_REUSEADDR is the actual option we are changing and the 1 is to enable it since its boolean w/ 1-0
     server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
     # You need to set the above options before binding the socket otherwise it doesnt apply
+    # For whatever reason this takes a tuple with two args, instead of just two separate args
     server_socket.bind((host, port))
 
     # You can limit the amount of incoming connections here but I didnt want to. Ex: foo_bar.listen(10) 
-    # For whatever reason this takes a tuple with two args, instead of just two separate args
     server_socket.listen()
     print(f"Server listening on socket: {host}:{port}")
 
@@ -48,7 +48,7 @@ def start_server():
         while True:
             i =+ 1
             '''
-            Alright this one is a bit rough, since I'm using TCP I cant respond to the client using its own sockets
+            Alright this one is a bit of a mouthful, since I'm using TCP I cant respond to the client using its own sockets
             (i.e. you cant send the response back to the client using just 123.123.123.123:1234) this works in UDP.
             However this is TCP so I NEED to respond, which means I gotta do the TCP handshake which is kinda complicated
             In python that means that I need to use the clients socket object but, that object is all the way in another file
