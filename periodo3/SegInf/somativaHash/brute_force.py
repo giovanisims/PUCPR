@@ -1,0 +1,1 @@
+# find a sha256 breaking algorythm

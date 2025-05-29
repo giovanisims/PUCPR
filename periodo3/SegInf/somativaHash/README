@@ -1,0 +1,35 @@
+Giovani Nota Simões, Livia Rosembach
+
+LEMBRE DE COLOCAR O NOME DAS PESSOAS NO TOPO DE TODOS OS CODIGOS E DO RELATORIO
+
+Se vc tiver lendo isso Pedro gostei das medidas anti IA, eu achei q tava ficando loco copiando as coisas kkkkkkkk
+
+
+1- auth.py
+Desenvolva um programa que implemente  cadastro e autenticação de usuários
+Um usuário possui os seguintes atributos:
+• Nome (string de 4 caracteres)
+• Senha (string de 4 caracteres)
+Além disso, o cadastro dos usuários deve ser armazenado em um arquivo JSON A
+aplicação deve utilizar o algoritmo SHA-256 para realizar como função hash para o armazenamento
+da senha.
+
+2- brute_force.py
+Tem q achar um algotritmo de quebra de hash e e guardar o tempo total e por senha, para a quebra
+
+3- auth.py
+Tem q dificulta a quebra de senha, provavelmente forçe ou usuario a colocar uma senha mais forte,
+ou coloque um limite na tentativa de senha tipo (mlr opção no momento)
+
+4- Relatorio
+A equipe deverá escrever um relatório contendo as seguintes seções:
+1. Estratégias adotadas para dificultar a quebra de senhas
+2. Análise de hash criptográfico
+
+Na primeira seção a equipe deverá descrever o que foi implementado na Seção 3 e porquê ela
+é efetiva contra ataques de força bruta. Na segunda seção a equipe deverá apresentar uma tabela
+contendo o tempo de quebra de cada senha da Seção 2, conforme Tabela 1. Após isso, o estudante
+deverá incluir outra tabela com os resultados obtidos na Seção 3. Ao final, descreva o porquê da
+variação nos tempos de quebra de senha entre as tabelas que você criou. 
+
+Não esqueça de incluir o nome dos integrantes do grupo no relatório
