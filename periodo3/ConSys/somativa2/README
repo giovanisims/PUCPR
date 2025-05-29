@@ -13,3 +13,5 @@ Um cliente especial (painel de controle) pode consultar a média de temperatura 
 2.  Quando for necessário compartilhar variáveis entre as funções que rodam em paralelo.
 3.  Quando for necessário criar dinamicamente muitas vezes a mesma instância de uma função.
     * Dependendo do sistema, criar uma Thread pode ser de 10 a 100 vezes mais rápido que criar um processo.
+    
+# Use CTRL+C to end any running process
