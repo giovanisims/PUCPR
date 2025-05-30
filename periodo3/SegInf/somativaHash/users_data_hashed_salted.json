@@ -1,0 +1,14 @@
+{
+    "test": {
+        "password": "a0751fc5bbd01151e596ee2c4eb5da4e2d649604ce6f64eb98fd888f4914c0d9",
+        "salt": "283e5e5433399e42044eddf7158d2b98"
+    },
+    "user": {
+        "password": "0f7f26d98d01f4056bc8b5bc1fc1b8013eacf50f3cb0933de38b98e72b5eea9c",
+        "salt": "b4a74efe78acc23b62c05ac207d51b60"
+    },
+    "wasd": {
+        "password": "adf78fd46c45d6fb1531d34af136f9f45e90dbde337fc23b44be32ade17b70fe",
+        "salt": "5ab949746404007cb0a6f29fa027bd85"
+    }
+}

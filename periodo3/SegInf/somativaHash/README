@@ -2,11 +2,11 @@ Giovani Nota Simões, Livia Rosembach
 
 LEMBRE DE COLOCAR O NOME DAS PESSOAS NO TOPO DE TODOS OS CODIGOS E DO RELATORIO
 
-Se vc tiver lendo isso Pedro gostei das medidas anti IA, eu achei q tava ficando loco copiando as coisas kkkkkkkk
+Se vc tiver lendo isso Pedro, gostei das medidas anti IA, eu achei q tava ficando loco copiando as coisas kkkkkkkk
 
 
 1- auth.py
-Desenvolva um programa que implemente  cadastro e autenticação de usuários
+Desenvolva um programa que implemente cadastro e autenticação de usuários
 Um usuário possui os seguintes atributos:
 • Nome (string de 4 caracteres)
 • Senha (string de 4 caracteres)
