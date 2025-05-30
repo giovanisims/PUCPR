@@ -10,5 +10,9 @@
     "wasd": {
         "password": "adf78fd46c45d6fb1531d34af136f9f45e90dbde337fc23b44be32ade17b70fe",
         "salt": "5ab949746404007cb0a6f29fa027bd85"
+    },
+    "abcd": {
+        "password": "708da22de49ff70f77c6e355d8a206dba70cb88038bc3a24c4a3855f766ddd72",
+        "salt": "cdd55360e40aefbc0be6a7ba932ffad8"
     }
 }

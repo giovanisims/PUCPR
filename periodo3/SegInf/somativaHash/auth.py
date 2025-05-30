@@ -1,3 +1,5 @@
+# Giovani Nota Simoes Livia Rosembach Oliveira
+
 import json
 import hashlib
 import os
@@ -18,7 +20,7 @@ def sing_in(users_data_hashed, users_data_hashed_salted):
             # Hashed and salted password stuff
             salt_hex = users_data_hashed_salted[username]["salt"]
             salt = bytes.fromhex(salt_hex)
-            hashed_salted_password = (hashlib.pbkdf2_hmac('sha256', encoded_password, salt, iterations)).hex()
+            hashed_salted_password = hashlib.pbkdf2_hmac('sha256', encoded_password, salt, iterations).hex()
 
             if not hashed_password.hexdigest() in users_data_hashed[username]["password"]:
                 print("Incorrect password")
@@ -56,7 +58,7 @@ def sign_up_hashing_salting(users_data_hashed, users_data_hashed_salted):
     # Apparently 16 bytes is a common size for a salt and so is
     salt = os.urandom(16) 
     hashed_password = hashlib.sha256(encoded_password)
-    hashed_salted_password = hashlib.pbkdf2_hmac('sha256', encoded_password, salt, iterations)
+    hashed_salted_password = hashlib.pbkdf2_hmac('sha256', encoded_password, salt, iterations).hex()
     try:
         # This dump() function works like this dump(foo, bar, indent=X), so foo is the python object we are serializing
         # bar is the "file like" object we are writing foo to, and indent=4 is just pretty print
@@ -64,7 +66,7 @@ def sign_up_hashing_salting(users_data_hashed, users_data_hashed_salted):
             users_data_hashed[username1] = {"password": hashed_password.hexdigest()}
             json.dump(users_data_hashed, users_data_json_hashed, indent=4)
         with open('./users_data_hashed_salted.json', 'w') as users_data_json_hashed_salted:
-            users_data_hashed_salted[username1] = {"password": hashed_salted_password.hex(), "salt": salt.hex()}
+            users_data_hashed_salted[username1] = {"password": hashed_salted_password, "salt": salt.hex()}
             json.dump(users_data_hashed_salted, users_data_json_hashed_salted, indent=4)
         print(f"\nUser {username1} sucessfully registered")
     except:
