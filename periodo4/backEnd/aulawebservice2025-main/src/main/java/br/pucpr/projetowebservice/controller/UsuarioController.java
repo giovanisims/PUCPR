@@ -17,7 +17,7 @@ public class UsuarioController {
 
     @PostMapping
     public ResponseEntity<UsuarioDTO> save(@RequestBody UsuarioDTO usuarioDTO) {
-        usuarioDTO. (1);
+        usuarioDTO.setId(1);
         usuarios.add(usuarioDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioDTO);
     }
