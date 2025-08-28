@@ -6,35 +6,32 @@ import android.os.IBinder;
 import android.util.Log;
 
 public class MyService extends Service {
-    public MyService() {
-    }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    public int onStartCommand(Intent intent, int flags, int startId){
 
-        Log.d("AppCom", "Started the Service");
+            Log.d("AppCom", "Started the Service");
 
-        double primeiro = intent.getDoubleExtra("primeiro", 0.0);
-        double segundo = intent.getDoubleExtra("segundo", 0.0);
+            double primeiro = intent.getDoubleExtra("primeiro", 0.0);
+            double segundo = intent.getDoubleExtra("segundo", 0.0);
 
-        Log.d("AppCom", "First Value: " + primeiro);
-        Log.d("AppCom", "Second Value: " + segundo);
+            Log.d("AppCom", "First Value: " + primeiro);
+            Log.d("AppCom", "Second Value: " + segundo);
 
-        double result = 0;
+            double result = 0;
+            for (int i = 0; i < segundo; i++) {
+                result += primeiro;
+            }
 
-        for (int i = 0; i < segundo; i++) {
-            result += primeiro;
-        }
+            Log.d("AppCom", "Result: " + result);
 
-        Log.d("AppCom", "Result: " + result);
+            Intent BroadCastIntent = new Intent("CALCULATION_FINISHED");
+            sendBroadcast(BroadCastIntent);
 
-        Intent BroadCastIntent = new Intent("CALCULATION_FINISHED");
-        sendBroadcast(BroadCastIntent);
+            Log.d("AppCom", "Stopped the Service");
+            stopSelf();
 
-        Log.d("AppCom", "Stopped the Service");
-        stopSelf();
-
-        return START_NOT_STICKY;
+            return START_NOT_STICKY;
     }
 
     @Override
@@ -42,4 +39,5 @@ public class MyService extends Service {
         // TODO: Return the communication channel to the service.
         throw new UnsupportedOperationException("Not yet implemented");
     }
+
 }

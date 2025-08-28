@@ -3,8 +3,13 @@ package com.example.javaapp;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.widget.Button;
 
 public class MyReceiver extends BroadcastReceiver {
+
+    public MyReceiver(Button btnConsultar) {
+
+    }
 
     @Override
     public void onReceive(Context context, Intent intent) {
