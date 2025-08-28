@@ -3,18 +3,20 @@ package com.example.javaapp;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Button;
 
 public class MyReceiver extends BroadcastReceiver {
 
+    private final Button btnConsultar;
     public MyReceiver(Button btnConsultar) {
-
+        this.btnConsultar = btnConsultar;
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        // TODO: This method is called when the BroadcastReceiver is receiving
-        // an Intent broadcast.
-        throw new UnsupportedOperationException("Not yet implemented");
+        Log.d("App Com", "Received intent" + intent.getAction());
+
+        btnConsultar.setEnabled(true);
     }
 }

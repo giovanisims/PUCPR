@@ -67,5 +67,7 @@ public class MyActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+
+        unregisterReceiver(myReceiver);
     }
 }
