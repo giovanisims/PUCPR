@@ -17,10 +17,8 @@ def mapeamento_memoria(lista_paginas):
                 del lista_8quadros[0]
             lista_8quadros.append(pagina)
         print(lista_8quadros)
-
-
     return lista_8quadros
-pass
+
 def main():
     mapeamento_memoria(lista_paginas1)
     # mapeamento_memoria(lista_paginas2)
