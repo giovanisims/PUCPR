@@ -15,7 +15,9 @@
             android:name=".MyContentProvider"
             android:authorities="com.example.javaapp"
             android:enabled="true"
-            android:exported="true"></provider>
+            android:exported="false">
+
+        </provider>
 
         <receiver
             android:name=".MyReceiver"
