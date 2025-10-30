@@ -1,4 +1,4 @@
-
+import static java.lang.Thread.sleep;
 
 public class Task implements Runnable {
 
@@ -6,9 +6,10 @@ public class Task implements Runnable {
 
     @Override
     public void run() {
-        double result = 0;
-        for (int i = 0; i < 100000; i++) {
-            result += Math.sin(i) * Math.cos(i);
+        try {
+            sleep(10);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 

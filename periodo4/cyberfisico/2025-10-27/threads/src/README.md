@@ -1,32 +1,34 @@
 ### 1. Código-Fonte
 
-*   **Simulação N:1**: `src/TestN1.java`
+*   **Simulação N:M**: `src/TestNM.java`
 *   **Simulação 1:1**: `src/Test11.java`
 *   **Tarefa Computacional**: `src/Task.java` (Usada por ambas as simulações)
 
 ### 2. Tabela de Tempos de Execução
 
-| Quantidade de Tarefas/Threads | Modelo N:1 (Tempo Total) | Modelo 1:1 (Tempo Total) |
-| ----------------------------- | ------------------------ | ------------------------ |
-| 10                            | 104 ms                   | 7 ms                     |
-| 100                           | 839 ms                   | 66 ms                    |
-| 500                           | 1667 ms                  | 474 ms                   |
-| 1000                          | 3134 ms                  | 1013 ms                  |
+| Quantidade de Tarefas/Threads | Modelo N:M (12 threads) | Modelo 1:1 (1 thread por tarefa) |
+| ----------------------------- | ----------------------- | -------------------------------- |
+| 10                            | 16 ms                   | 11 ms                            |
+| 100                           | 93 ms                   | 18 ms                            |
+| 500                           | 429 ms                  | 50 ms                            |
+| 1000                          | 857 ms                  | 78 ms                            |
 
 ### 3. Relatório com Análise Crítica dos Resultados
 
 #### Análise de Desempenho
 
-*   **Modelo N:1**: Apresentou um tempo de execução total significativamente mais lento para cargas de trabalho que podem ser paralelizadas.
+*   **Modelo N:M (Thread Pool)**: Apresentou tempo de execução mais lento devido à limitação de 12 threads processando todas as tarefas sequencialmente. Com 1000 tarefas e 12 threads, o tempo teórico mínimo seria ~834ms (1000 ÷ 12 × 10ms), e o resultado real de 857ms está próximo desse valor.
 
-
-*   **Modelo 1:1**: Apresentou um desempenho de tempo de execução total drasticamente superior
-
+*   **Modelo 1:1**: Demonstrou desempenho superior em tempo total de execução, executando todas as tarefas em paralelo. O tempo permaneceu próximo de 10ms (o tempo de uma única tarefa) mais overhead de criação de threads.
 
 #### Trade-offs e Limitações
 
-Apesar da vitória em velocidade do modelo 1:1, a análise não estaria completa sem considerar seus custos e limitações, que não são aparentes apenas no tempo de execução:
+Apesar da vitória em velocidade do modelo 1:1, a análise não estaria completa sem considerar seus custos e limitações:
 
-1.  **Consumo de Recursos**: O modelo 1:1 é caro em termos de memória. Cada thread do sistema operacional requer sua própria pilha de memória (geralmente ~1MB). Com 1.000 threads, isso já representa um consumo de ~1GB de RAM apenas para as pilhas, antes mesmo de a aplicação alocar memória para outros objetos. O modelo N:1, por outro lado, é extremamente leve, usando apenas uma thread e uma pilha.
+1.  **Consumo de Recursos**: O modelo 1:1 é extremamente caro em recursos. Cada thread do sistema operacional requer sua própria pilha de memória (geralmente ~1MB). Com 1.000 threads. O modelo N:M usa apenas 12 threads, mantendo o consumo de memória baixo e previsível.
 
-2.  **Sobrecarga de Contexto (Context Switching)**: Quando o número de threads ativas excede o número de núcleos de CPU disponíveis, o sistema operacional é forçado a alternar rapidamente entre as threads. Essa troca de contexto é uma operação de que causa muito overhead. Isso explica por que o desempenho do modelo 1:1 não escala perfeitamente e a eficiência diminui à medida que o número de threads aumenta.
+2.  **Sobrecarga de Criação de Threads**: Os tempos crescentes do modelo 1:1 (11ms → 78ms) revelam o custo de criar threads. Com 10 threads, o overhead é apenas 1ms; com 1000 threads, sobe para 68ms. O modelo N:M evita esse problema criando threads apenas uma vez no início.
+
+#### Conclusão
+
+O modelo 1:1 vence em velocidade bruta para tarefas de I/O curtas, mas o modelo N:M é a escolha correta para aplicações de produção devido à eficiência de recursos, escalabilidade e previsibilidade de desempenho.
