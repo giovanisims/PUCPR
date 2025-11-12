@@ -15,9 +15,10 @@ print('Criando coleção "users"...');
 db.createCollection("users", {
     validator: {
         $jsonSchema: {
-            bsonType: "object", // Isso é redundante já que o BSON de nível superior é sempre "object"
+            bsonType: "object",
             title: "User Object Validation",
             required: ["name", "email", "password", "address"],
+            additionalProperties: true,
             properties: { // Define cada atributo na tabela
                 name: {
                     bsonType: "string",
@@ -124,8 +125,8 @@ db.createCollection("products", {
                     description: "'description' deve ser uma string"
                 },
                 price: {
-                    bsonType: "double",
-                    description: "'price' deve ser um double e é obrigatório"
+                    bsonType: ["double", "int"],
+                    description: "'price' deve ser um número e é obrigatório"
                 },
                 quantity: {
                     bsonType: "int",
@@ -158,7 +159,6 @@ db.createCollection("products", {
                             },
                             review: { bsonType: "string" },
                             vendorReply: { bsonType: "string" },
-                            reply: { bsonType: "string" },
                             date: { bsonType: "date" }
                         }
                     }
@@ -196,7 +196,7 @@ db.createCollection("orders", {
                                 bsonType: "int",
                                 minimum: 1
                             },
-                            price: { bsonType: "double" } // Preço "snapshot" no momento da compra
+                            price: { bsonType: ["double", "int"] } // Preço "snapshot" no momento da compra
                         }
                     }
                 },
@@ -614,22 +614,28 @@ print(`Total inserido: ${userIds.length} usuários, ${categoryIds.length} catego
 
 // --- Consultas Sprint 1 --- //
 
+print('\n==============================================');
+print('===    INICIANDO CONSULTAS - SPRINT 1     ===');
+print('==============================================\n');
+
 // --- 1. Encontrar todos os produtos de uma categoria específica --- //
 
+print('\n--- CONSULTA 1: Produtos por Categoria ---');
 // Primeiro, encontramos o ID da categoria que queremos
 const category = db.categories.findOne({ name: "Electronics" });
 
 if (category) {
   const categoryId = category._id;
   
-  print(`Buscando produtos para a Categoria ID: ${categoryId}`);
+  print(`Buscando produtos para a Categoria: ${category.name} (ID: ${categoryId})`);
   
   // Agora, usamos esse ID para encontrar todos os produtos correspondentes
-  const products = db.products.find({ categoryId: categoryId });
+  const productsQuery1 = db.products.find({ categoryId: categoryId }).toArray();
   
+  print(`Total de produtos encontrados: ${productsQuery1.length}`);
   // Imprime os resultados
-  products.forEach(product => {
-    printjson(product);
+  productsQuery1.forEach(product => {
+    print(`  - ${product.name} (R$ ${product.price}) - Estoque: ${product.quantity}`);
   });
   
 } else {
@@ -638,6 +644,7 @@ if (category) {
 
 // --- 2. Buscar todas as avaliações de um produto --- //
 
+print('\n--- CONSULTA 2: Avaliações de Produto ---');
 // Busca o primeiro produto que tenha avaliações
 const productWithRatings = db.products.findOne({ "ratings.0": { $exists: true } });
 
@@ -647,15 +654,19 @@ if (productWithRatings) {
   print(`Buscando avaliações para o Produto: ${productWithRatings.name} (ID: ${productIdToFind})`);
   
   // Usamos findOne para o produto e projeção { ratings: 1 } para retornar APENAS o array de ratings
-  // _id: 0 remove o campo _id do resultado para um output mais limpo
-  const result = db.products.findOne(
+  const resultQuery2 = db.products.findOne(
     { _id: productIdToFind },
-    { projection: { _id: 0, name: 1, ratings: 1 } }
+    { projection: { name: 1, ratings: 1 } }
   );
   
-  if (result && result.ratings) {
-    print("Avaliações encontradas:");
-    printjson(result.ratings);
+  if (resultQuery2 && resultQuery2.ratings) {
+    print(`Total de avaliações: ${resultQuery2.ratings.length}`);
+    resultQuery2.ratings.forEach((rating, index) => {
+      print(`  Avaliação ${index + 1}: ${rating.rating} estrelas - "${rating.review}"`);
+      if (rating.vendorReply) {
+        print(`    Resposta do vendedor: "${rating.vendorReply}"`);
+      }
+    });
   } else {
     print("Produto não possui avaliações.");
   }
@@ -665,14 +676,19 @@ if (productWithRatings) {
 
 // --- 3. Criar uma nova transação (compra) --- //
 
+print('\n--- CONSULTA 3: Criar Nova Transação ---');
 // Obtém IDs reais do banco de dados
-const customer = db.users.findOne({}, { _id: 1 });
-const products = db.products.find({}).limit(2).toArray();
+const customer = db.users.findOne({}, { _id: 1, name: 1 });
+const productsQuery3 = db.products.find({}).limit(2).toArray();
 
-if (customer && products.length >= 2) {
+if (customer && productsQuery3.length >= 2) {
   const customerId = customer._id;
-  const product1Id = products[0]._id;
-  const product2Id = products[1]._id;
+  const product1Id = productsQuery3[0]._id;
+  const product2Id = productsQuery3[1]._id;
+  
+  print(`Cliente: ${customer.name}`);
+  print(`Produto 1: ${productsQuery3[0].name} - R$ ${productsQuery3[0].price}`);
+  print(`Produto 2: ${productsQuery3[1].name} - R$ ${productsQuery3[1].price} (x2)`);
   
   // Montamos o documento do pedido
   const newOrder = {
@@ -680,28 +696,28 @@ if (customer && products.length >= 2) {
     products: [
       {
         productId: product1Id,
-        quantity: 1,
-        price: products[0].price // "Snapshot" do preço no momento da compra
+        quantity: NumberInt(1),
+        price: productsQuery3[0].price // "Snapshot" do preço no momento da compra
       },
       {
         productId: product2Id,
-        quantity: 2,
-        price: products[1].price 
+        quantity: NumberInt(2),
+        price: productsQuery3[1].price 
       }
     ],
     status: "Pending", // Status inicial, conforme nosso schema enum
     date: new Date(),
-    generatedPoints: Math.floor((products[0].price + (products[1].price * 2)) / 10)
+    generatedPoints: Math.floor((productsQuery3[0].price + (productsQuery3[1].price * 2)) / 10)
   };
   
   try {
     const insertResult = db.orders.insertOne(newOrder);
-    print("Pedido criado com sucesso!");
-    print(`Novo Order ID: ${insertResult.insertedId}`);
-    printjson(newOrder);
+    print("✓ Pedido criado com sucesso!");
+    print(`  Order ID: ${insertResult.insertedId}`);
+    print(`  Pontos gerados: ${newOrder.generatedPoints}`);
     
   } catch (e) {
-    print("ERRO ao criar pedido:");
+    print("✗ ERRO ao criar pedido:");
     printjson(e); // Isso mostrará erros de validação se houver
   }
 } else {
@@ -710,6 +726,7 @@ if (customer && products.length >= 2) {
 
 // --- 4. Atualizar quantidade de produto após uma compra --- //
 
+print('\n--- CONSULTA 4: Atualizar Estoque ---');
 // Obtém os primeiros 2 produtos do banco para simular uma compra
 const productsForUpdate = db.products.find({}).limit(2).toArray();
 
@@ -725,9 +742,10 @@ if (productsForUpdate.length >= 2) {
     }
   ];
   
-  print("Preparando para atualizar estoque...");
-  print(`Produto 1: ${productsForUpdate[0].name} - Quantidade atual: ${productsForUpdate[0].quantity}`);
-  print(`Produto 2: ${productsForUpdate[1].name} - Quantidade atual: ${productsForUpdate[1].quantity}`);
+  print(`Produto 1: ${productsForUpdate[0].name}`);
+  print(`  Quantidade ANTES: ${productsForUpdate[0].quantity} unidades`);
+  print(`Produto 2: ${productsForUpdate[1].name}`);
+  print(`  Quantidade ANTES: ${productsForUpdate[1].quantity} unidades`);
   
   // Criamos um array de operações de atualização
   const operations = itemsPurchased.map(item => {
@@ -745,23 +763,30 @@ if (productsForUpdate.length >= 2) {
   try {
     const bulkResult = db.products.bulkWrite(operations);
     
-    print("Estoque atualizado com sucesso!");
-    print(`Documentos modificados: ${bulkResult.modifiedCount}`);
+    print("\n✓ Estoque atualizado com sucesso!");
+    print(`  Documentos modificados: ${bulkResult.modifiedCount}`);
     
     // Mostra as quantidades atualizadas
     const updatedProducts = db.products.find({ 
       _id: { $in: itemsPurchased.map(item => item.productId) } 
     }).toArray();
     
-    print("\nQuantidades após atualização:");
+    print("\nQuantidades DEPOIS da atualização:");
     updatedProducts.forEach(p => {
-      print(`${p.name}: ${p.quantity} unidades`);
+      print(`  ${p.name}: ${p.quantity} unidades`);
     });
     
   } catch (e) {
-    print("ERRO ao atualizar estoque:");
+    print("✗ ERRO ao atualizar estoque:");
     printjson(e);
   }
 } else {
   print("Não há produtos suficientes no banco para realizar a atualização.");
 }
+
+print('\n==============================================');
+print('===     CONSULTAS CONCLUÍDAS COM SUCESSO   ===');
+print('==============================================\n');
+
+// Retorna um resumo final para o Playground mostrar no painel de resultados
+db.orders.countDocuments();
