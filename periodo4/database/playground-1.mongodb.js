@@ -1,3 +1,7 @@
+// Nome dos integrantes:
+// Giovani Nota Simões
+// Livia Oliveira Rosembach
+// Lucas Brisch
 
 // --- Conectar ao banco de dados 'ecommerce' --- //
 use('ecommerce');
