@@ -13,6 +13,7 @@ db.users.drop();
 db.categories.drop();
 db.products.drop();
 db.orders.drop();
+db.ratings.drop();
 
 // --- 1. Coleção: users --- //
 print('Criando coleção "users"...');
@@ -147,25 +148,6 @@ db.createCollection("products", {
                 userId: {
                     bsonType: "objectId",
                     description: "'userId' (vendedor) é uma referência e é obrigatório"
-                },
-                ratings: {
-                    bsonType: "array",
-                    description: "'ratings' deve ser um array de objetos de avaliação",
-                    items: {
-                        bsonType: "object",
-                        required: ["userId", "rating", "date"],
-                        properties: {
-                            userId: { bsonType: "objectId" },
-                            rating: {
-                                bsonType: "number",
-                                minimum: 1,
-                                maximum: 5
-                            },
-                            review: { bsonType: "string" },
-                            vendorReply: { bsonType: "string" },
-                            date: { bsonType: "date" }
-                        }
-                    }
                 }
             }
         }
@@ -174,7 +156,49 @@ db.createCollection("products", {
     validationLevel: "strict"
 });
 
-// --- 4. Coleção: orders --- //
+// --- 4. Coleção: ratings --- //
+print('Criando coleção "ratings"...');
+db.createCollection("ratings", {
+    validator: {
+        $jsonSchema: {
+            bsonType: "object",
+            title: "Rating Object Validation",
+            required: ["productId", "userId", "rating", "date"],
+            properties: {
+                productId: {
+                    bsonType: "objectId",
+                    description: "'productId' é uma referência ao produto e é obrigatório"
+                },
+                userId: {
+                    bsonType: "objectId",
+                    description: "'userId' é uma referência ao usuário que avaliou e é obrigatório"
+                },
+                rating: {
+                    bsonType: "number",
+                    minimum: 1,
+                    maximum: 5,
+                    description: "'rating' deve ser entre 1 e 5 e é obrigatório"
+                },
+                review: {
+                    bsonType: "string",
+                    description: "'review' é o texto da avaliação (opcional)"
+                },
+                vendorReply: {
+                    bsonType: "string",
+                    description: "'vendorReply' é a resposta do vendedor (opcional)"
+                },
+                date: {
+                    bsonType: "date",
+                    description: "'date' é a data da avaliação e é obrigatório"
+                }
+            }
+        }
+    },
+    validationAction: "error",
+    validationLevel: "strict"
+});
+
+// --- 5. Coleção: orders --- //
 print('Criando coleção "orders"...');
 db.createCollection("orders", {
     validator: {
@@ -381,22 +405,7 @@ const productsResult = db.products.insertMany([
         quantity: NumberInt(15),
         Location: "Curitiba - PR",
         categoryId: categoryIds[0], // Electronics
-        userId: userIds[0], // João Silva (vendedor)
-        ratings: [
-            {
-                userId: userIds[1],
-                rating: 5,
-                review: "Excelente produto, superou minhas expectativas!",
-                vendorReply: "Obrigado pelo feedback!",
-                date: new Date("2024-10-15")
-            },
-            {
-                userId: userIds[2],
-                rating: 4,
-                review: "Muito bom, apenas a entrega demorou um pouco.",
-                date: new Date("2024-11-01")
-            }
-        ]
+        userId: userIds[0] // João Silva (vendedor)
     },
     {
         name: "Classic Fiction Novel",
@@ -405,15 +414,7 @@ const productsResult = db.products.insertMany([
         quantity: NumberInt(50),
         Location: "São Paulo - SP",
         categoryId: categoryIds[1], // Books
-        userId: userIds[1], // Maria Santos (vendedor)
-        ratings: [
-            {
-                userId: userIds[3],
-                rating: 5,
-                review: "História incrível, não consegui parar de ler!",
-                date: new Date("2024-10-20")
-            }
-        ]
+        userId: userIds[1] // Maria Santos (vendedor)
     },
     {
         name: "Sports Running Shoes",
@@ -422,22 +423,7 @@ const productsResult = db.products.insertMany([
         quantity: NumberInt(30),
         Location: "Belo Horizonte - MG",
         categoryId: categoryIds[4], // Sports
-        userId: userIds[2], // Pedro Oliveira (vendedor)
-        ratings: [
-            {
-                userId: userIds[0],
-                rating: 4,
-                review: "Confortável, mas poderia ter mais opções de cores.",
-                vendorReply: "Obrigado! Em breve teremos novas cores disponíveis.",
-                date: new Date("2024-10-25")
-            },
-            {
-                userId: userIds[4],
-                rating: 5,
-                review: "Perfeito para corridas longas!",
-                date: new Date("2024-11-05")
-            }
-        ]
+        userId: userIds[2] // Pedro Oliveira (vendedor)
     },
     {
         name: "Wooden Coffee Table",
@@ -446,15 +432,7 @@ const productsResult = db.products.insertMany([
         quantity: NumberInt(8),
         Location: "Salvador - BA",
         categoryId: categoryIds[3], // Home & Garden
-        userId: userIds[3], // Ana Costa (vendedor)
-        ratings: [
-            {
-                userId: userIds[1],
-                rating: 5,
-                review: "Qualidade excepcional, ficou perfeita na sala!",
-                date: new Date("2024-10-30")
-            }
-        ]
+        userId: userIds[3] // Ana Costa (vendedor)
     },
     {
         name: "Cotton T-Shirt",
@@ -463,21 +441,7 @@ const productsResult = db.products.insertMany([
         quantity: NumberInt(100),
         Location: "Rio de Janeiro - RJ",
         categoryId: categoryIds[2], // Clothing
-        userId: userIds[4], // Carlos Mendes (vendedor)
-        ratings: [
-            {
-                userId: userIds[2],
-                rating: 4,
-                review: "Tecido de boa qualidade, o tamanho é fiel.",
-                date: new Date("2024-11-02")
-            },
-            {
-                userId: userIds[3],
-                rating: 5,
-                review: "Muito confortável e o preço é justo.",
-                date: new Date("2024-11-08")
-            }
-        ]
+        userId: userIds[4] // Carlos Mendes (vendedor)
     },
     {
         name: "Smartphone Pro Max",
@@ -486,8 +450,7 @@ const productsResult = db.products.insertMany([
         quantity: NumberInt(20),
         Location: "Curitiba - PR",
         categoryId: categoryIds[0], // Electronics
-        userId: userIds[0], // João Silva (vendedor)
-        ratings: []
+        userId: userIds[0] // João Silva (vendedor)
     },
     {
         name: "Academic Physics Book",
@@ -496,20 +459,91 @@ const productsResult = db.products.insertMany([
         quantity: NumberInt(25),
         Location: "São Paulo - SP",
         categoryId: categoryIds[1], // Books
-        userId: userIds[1], // Maria Santos (vendedor)
-        ratings: [
-            {
-                userId: userIds[4],
-                rating: 5,
-                review: "Excelente material didático!",
-                date: new Date("2024-10-18")
-            }
-        ]
+        userId: userIds[1] // Maria Santos (vendedor)
     }
 ]);
 
 const productIds = Object.values(productsResult.insertedIds);
 print(`${productIds.length} produtos inseridos com sucesso!`);
+
+// --- Inserindo Avaliações (Ratings) --- //
+print('Inserindo avaliações...');
+const ratingsResult = db.ratings.insertMany([
+    // Avaliações do Premium Laptop (produto 0)
+    {
+        productId: productIds[0],
+        userId: userIds[1],
+        rating: 5,
+        review: "Excelente produto, superou minhas expectativas!",
+        vendorReply: "Obrigado pelo feedback!",
+        date: new Date("2024-10-15")
+    },
+    {
+        productId: productIds[0],
+        userId: userIds[2],
+        rating: 4,
+        review: "Muito bom, apenas a entrega demorou um pouco.",
+        date: new Date("2024-11-01")
+    },
+    // Avaliação do Classic Fiction Novel (produto 1)
+    {
+        productId: productIds[1],
+        userId: userIds[3],
+        rating: 5,
+        review: "História incrível, não consegui parar de ler!",
+        date: new Date("2024-10-20")
+    },
+    // Avaliações do Sports Running Shoes (produto 2)
+    {
+        productId: productIds[2],
+        userId: userIds[0],
+        rating: 4,
+        review: "Confortável, mas poderia ter mais opções de cores.",
+        vendorReply: "Obrigado! Em breve teremos novas cores disponíveis.",
+        date: new Date("2024-10-25")
+    },
+    {
+        productId: productIds[2],
+        userId: userIds[4],
+        rating: 5,
+        review: "Perfeito para corridas longas!",
+        date: new Date("2024-11-05")
+    },
+    // Avaliação do Wooden Coffee Table (produto 3)
+    {
+        productId: productIds[3],
+        userId: userIds[1],
+        rating: 5,
+        review: "Qualidade excepcional, ficou perfeita na sala!",
+        date: new Date("2024-10-30")
+    },
+    // Avaliações do Cotton T-Shirt (produto 4)
+    {
+        productId: productIds[4],
+        userId: userIds[2],
+        rating: 4,
+        review: "Tecido de boa qualidade, o tamanho é fiel.",
+        date: new Date("2024-11-02")
+    },
+    {
+        productId: productIds[4],
+        userId: userIds[3],
+        rating: 5,
+        review: "Muito confortável e o preço é justo.",
+        date: new Date("2024-11-08")
+    },
+    // Avaliação do Academic Physics Book (produto 6)
+    {
+        productId: productIds[6],
+        userId: userIds[4],
+        rating: 5,
+        review: "Excelente material didático!",
+        date: new Date("2024-10-18")
+    }
+]);
+
+const ratingIds = Object.values(ratingsResult.insertedIds);
+print(`${ratingIds.length} avaliações inseridas com sucesso!`);
 
 // --- Inserindo Pedidos --- //
 print('Inserindo pedidos...');
@@ -668,6 +702,24 @@ print('✓ Índice geoespacial (2dsphere) criado em users.geolocation');
 db.categories.createIndex({ name: 1 });
 print('✓ Índice criado em categories.name');
 
+// Índice em ratings.productId
+// Justificativa: Busca de avaliações por produto é operação muito frequente
+// Essencial para exibir reviews de produtos e cálculos de média
+db.ratings.createIndex({ productId: 1 });
+print('✓ Índice criado em ratings.productId');
+
+// Índice em ratings.userId
+// Justificativa: Permite buscar todas as avaliações feitas por um usuário
+// Útil para perfil do usuário e histórico de reviews
+db.ratings.createIndex({ userId: 1 });
+print('✓ Índice criado em ratings.userId');
+
+// Índice em ratings.date (descendente)
+// Justificativa: Ordenação de avaliações por data mais recente
+// Importante para exibir reviews mais relevantes primeiro
+db.ratings.createIndex({ date: -1 });
+print('✓ Índice criado em ratings.date (ordem descendente)');
+
 print('--- Criação de índices concluída! ---\n');
 
 
@@ -704,33 +756,47 @@ if (category) {
 // --- 2. Buscar todas as avaliações de um produto --- //
 
 print('\n--- CONSULTA 2: Avaliações de Produto ---');
-// Busca o primeiro produto que tenha avaliações
-const productWithRatings = db.products.findOne({ "ratings.0": { $exists: true } });
+// Busca o primeiro produto que tenha avaliações na coleção ratings
+const firstRating = db.ratings.findOne({});
 
-if (productWithRatings) {
-  const productIdToFind = productWithRatings._id;
+if (firstRating) {
+  const productIdToFind = firstRating.productId;
   
-  print(`Buscando avaliações para o Produto: ${productWithRatings.name} (ID: ${productIdToFind})`);
+  // Usa aggregation para fazer o lookup do produto e suas avaliações
+  const resultQuery2 = db.products.aggregate([
+    { $match: { _id: productIdToFind } },
+    {
+      $lookup: {
+        from: "ratings",
+        localField: "_id",
+        foreignField: "productId",
+        as: "ratings"
+      }
+    },
+    {
+      $project: {
+        name: 1,
+        ratings: 1
+      }
+    }
+  ]).toArray();
   
-  // Usamos findOne para o produto e projeção { ratings: 1 } para retornar APENAS o array de ratings
-  const resultQuery2 = db.products.findOne(
-    { _id: productIdToFind },
-    { projection: { name: 1, ratings: 1 } }
-  );
-  
-  if (resultQuery2 && resultQuery2.ratings) {
-    print(`Total de avaliações: ${resultQuery2.ratings.length}`);
-    resultQuery2.ratings.forEach((rating, index) => {
-      print(`  Avaliação ${index + 1}: ${rating.rating} estrelas - "${rating.review}"`);
+  if (resultQuery2.length > 0) {
+    const product = resultQuery2[0];
+    print(`Buscando avaliações para o Produto: ${product.name} (ID: ${productIdToFind})`);
+    print(`Total de avaliações: ${product.ratings.length}`);
+    
+    product.ratings.forEach((rating, index) => {
+      print(`  Avaliação ${index + 1}: ${rating.rating} estrelas - "${rating.review || 'Sem comentário'}"`);
       if (rating.vendorReply) {
         print(`    Resposta do vendedor: "${rating.vendorReply}"`);
       }
     });
   } else {
-    print("Produto não possui avaliações.");
+    print("Produto não encontrado.");
   }
 } else {
-  print("Nenhum produto com avaliações foi encontrado.");
+  print("Nenhuma avaliação encontrada no sistema.");
 }
 
 // --- 3. Criar uma nova transação (compra) --- //
@@ -846,19 +912,36 @@ if (productsForUpdate.length >= 2) {
 // --- 5. Calcular a média de avaliação por produto --- //
 
 print('\n--- CONSULTA 5: Média de Avaliação por Produto ---');
-// Usa $unwind para "desnormalizar" o array de ratings e calcular a média por produto
-const avgRatingsResult = db.products.aggregate([
+// Usa a coleção ratings e faz lookup para obter nomes dos produtos
+const avgRatingsResult = db.ratings.aggregate([
   {
-    // Desconstrói o array de ratings para processar cada avaliação individualmente
-    $unwind: "$ratings"
+    // Agrupa as avaliações por produto e calcula a média
+    $group: {
+      _id: "$productId",
+      averageRating: { $avg: "$rating" },
+      totalRatings: { $sum: 1 }
+    }
   },
   {
-    // Agrupa por produto e calcula a média das avaliações
-    $group: {
-      _id: "$_id",
-      productName: { $first: "$name" },
-      averageRating: { $avg: "$ratings.rating" },
-      totalRatings: { $sum: 1 }
+    // Lookup para obter o nome do produto
+    $lookup: {
+      from: "products",
+      localField: "_id",
+      foreignField: "_id",
+      as: "productInfo"
+    }
+  },
+  {
+    // Desconstrói o resultado do lookup
+    $unwind: "$productInfo"
+  },
+  {
+    // Projeta os campos desejados
+    $project: {
+      _id: 1,
+      productName: "$productInfo.name",
+      averageRating: 1,
+      totalRatings: 1
     }
   },
   {
@@ -1097,41 +1180,29 @@ if (userWithPoints) {
 // --- 12. Vendedor responde a uma avaliação --- //
 
 print('\n--- CONSULTA 12: Responder Avaliação ---');
-// Encontra um produto com avaliação sem resposta do vendedor
-const productWithUnrepliedRating = db.products.findOne({
-  "ratings": {
-    $elemMatch: {
-      review: { $exists: true },
-      vendorReply: { $exists: false }
-    }
-  }
+// Encontra uma avaliação sem resposta do vendedor
+const unrepliedRating = db.ratings.findOne({
+  review: { $exists: true },
+  vendorReply: { $exists: false }
 });
 
-if (productWithUnrepliedRating) {
-  // Adiciona resposta do vendedor à primeira avaliação sem resposta
-  const ratingIndex = productWithUnrepliedRating.ratings.findIndex(
-    r => r.review && !r.vendorReply
+if (unrepliedRating) {
+  const vendorReply = "Obrigado pelo seu feedback! Estamos sempre buscando melhorar.";
+  
+  // Busca o produto para mostrar informação
+  const product = db.products.findOne({ _id: unrepliedRating.productId });
+  
+  // Atualiza a avaliação diretamente na coleção ratings
+  db.ratings.updateOne(
+    { _id: unrepliedRating._id },
+    { $set: { vendorReply: vendorReply } }
   );
   
-  if (ratingIndex !== -1) {
-    const vendorReply = "Obrigado pelo seu feedback! Estamos sempre buscando melhorar.";
-    
-    db.products.updateOne(
-      { 
-        _id: productWithUnrepliedRating._id,
-        "ratings.userId": productWithUnrepliedRating.ratings[ratingIndex].userId
-      },
-      {
-        $set: {
-          "ratings.$.vendorReply": vendorReply
-        }
-      }
-    );
-    
-    print(`✓ Resposta adicionada à avaliação do produto: ${productWithUnrepliedRating.name}`);
-    print(`  Avaliação Original: "${productWithUnrepliedRating.ratings[ratingIndex].review}"`);
-    print(`  Resposta do Vendedor: "${vendorReply}"`);
-  }
+  print(`✓ Resposta adicionada à avaliação do produto: ${product ? product.name : 'Desconhecido'}`);
+  print(`  Avaliação Original: "${unrepliedRating.review}"`);
+  print(`  Resposta do Vendedor: "${vendorReply}"`);
+} else {
+  print("Nenhuma avaliação sem resposta encontrada.");
 }
 
 // --- 13. Buscar produtos por proximidade (geolocalização) --- //
