@@ -1043,24 +1043,6 @@ if (productForPromo) {
   print(`  Válida até: ${new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}`);
 }
 
-// --- 9. Buscar produtos com promoções ativas --- //
-
-print('\n--- CONSULTA 9: Produtos com Promoções Ativas ---');
-// Busca produtos que têm promoção ativa e dentro do período válido
-const productsWithPromo = db.products.find({
-  "promotion.active": true,
-  "promotion.startDate": { $lte: new Date() },
-  "promotion.endDate": { $gte: new Date() }
-}).toArray();
-
-print(`Total de produtos em promoção: ${productsWithPromo.length}`);
-productsWithPromo.forEach(product => {
-  const discountedPrice = product.price * (1 - product.promotion.discountPercent/100);
-  print(`  ${product.name}:`);
-  print(`    Desconto: ${product.promotion.discountPercent}%`);
-  print(`    De R$ ${product.price.toFixed(2)} por R$ ${discountedPrice.toFixed(2)}`);
-});
-
 // --- 10. Atualizar pontos de fidelidade após compra --- //
 
 print('\n--- CONSULTA 10: Atualizar Pontos de Fidelidade ---');
@@ -1189,6 +1171,304 @@ if (referenceUser && referenceUser.geolocation) {
       });
     }
   });
+}
+
+// --- 14. Buscar produtos próximos ao usuário dentro de um raio específico --- //
+
+print('\n--- CONSULTA 14: Produtos Próximos ao Usuário (Raio Específico) ---');
+// Define o usuário de referência e o raio de busca
+const searchUser = db.users.findOne({ name: "Maria Santos" });
+const searchRadius = 200; // 200 km
+
+if (searchUser && searchUser.geolocation) {
+  print(`Usuário: ${searchUser.name} (${searchUser.address.City}, ${searchUser.address.State})`);
+  print(`Raio de busca: ${searchRadius} km`);
+  
+  // Busca vendedores dentro do raio usando índice geoespacial
+  const nearbyVendors = db.users.aggregate([
+    {
+      $geoNear: {
+        near: searchUser.geolocation,
+        distanceField: "distance",
+        maxDistance: searchRadius * 1000, // Converte km para metros
+        spherical: true
+      }
+    },
+    {
+      // Lookup para buscar produtos desses vendedores
+      $lookup: {
+        from: "products",
+        localField: "_id",
+        foreignField: "userId",
+        as: "products"
+      }
+    },
+    {
+      // Filtra apenas vendedores que têm produtos
+      $match: {
+        "products.0": { $exists: true }
+      }
+    },
+    {
+      // Desconstrói o array de produtos
+      $unwind: "$products"
+    },
+    {
+      // Projeta os campos relevantes
+      $project: {
+        vendorName: "$name",
+        vendorCity: "$address.City",
+        vendorState: "$address.State",
+        distanceKm: { $divide: ["$distance", 1000] },
+        productName: "$products.name",
+        productPrice: "$products.price",
+        productQuantity: "$products.quantity"
+      }
+    },
+    {
+      // Ordena por distância
+      $sort: { distanceKm: 1 }
+    }
+  ]).toArray();
+  
+  print(`✓ Encontrados ${nearbyVendors.length} produtos disponíveis:`);
+  
+  // Agrupa por vendedor para melhor visualização
+  const vendorMap = {};
+  nearbyVendors.forEach(item => {
+    if (!vendorMap[item.vendorName]) {
+      vendorMap[item.vendorName] = {
+        distance: item.distanceKm,
+        city: item.vendorCity,
+        state: item.vendorState,
+        products: []
+      };
+    }
+    vendorMap[item.vendorName].products.push({
+      name: item.productName,
+      price: item.productPrice
+    });
+  });
+  
+  Object.keys(vendorMap).forEach(vendorName => {
+    const vendor = vendorMap[vendorName];
+    print(`  ${vendorName} - ${vendor.city}, ${vendor.state} (${vendor.distance.toFixed(1)} km)`);
+    vendor.products.forEach(product => {
+      print(`    - ${product.name}: R$ ${product.price.toFixed(2)}`);
+    });
+  });
+}
+
+// --- 15. Calcular média de distância entre compradores e vendedores --- //
+
+print('\n--- CONSULTA 15: Média de Distância Comprador-Vendedor ---');
+// Calcula a distância média entre compradores e vendedores em transações concluídas
+const distanceAnalysis = db.orders.aggregate([
+  {
+    // Filtra apenas pedidos entregues
+    $match: { status: "Delivered" }
+  },
+  {
+    // Lookup para obter dados do comprador
+    $lookup: {
+      from: "users",
+      localField: "userId",
+      foreignField: "_id",
+      as: "buyer"
+    }
+  },
+  {
+    $unwind: "$buyer"
+  },
+  {
+    // Desconstrói produtos do pedido
+    $unwind: "$products"
+  },
+  {
+    // Lookup para obter dados do produto
+    $lookup: {
+      from: "products",
+      localField: "products.productId",
+      foreignField: "_id",
+      as: "productInfo"
+    }
+  },
+  {
+    $unwind: "$productInfo"
+  },
+  {
+    // Lookup para obter dados do vendedor
+    $lookup: {
+      from: "users",
+      localField: "productInfo.userId",
+      foreignField: "_id",
+      as: "vendor"
+    }
+  },
+  {
+    $unwind: "$vendor"
+  },
+  {
+    // Calcula a distância entre comprador e vendedor usando $geoNear não é possível aqui,
+    // então usamos a fórmula de Haversine manualmente (aproximação)
+    $project: {
+      buyerName: "$buyer.name",
+      buyerCity: "$buyer.address.City",
+      buyerCoords: "$buyer.geolocation.coordinates",
+      vendorName: "$vendor.name",
+      vendorCity: "$vendor.address.City",
+      vendorCoords: "$vendor.geolocation.coordinates",
+      // Cálculo simplificado de distância (não é preciso, mas serve para demonstração)
+      // Em produção, use uma função mais precisa ou cálculo no código
+      latDiff: {
+        $subtract: [
+          { $arrayElemAt: ["$buyer.geolocation.coordinates", 1] },
+          { $arrayElemAt: ["$vendor.geolocation.coordinates", 1] }
+        ]
+      },
+      lonDiff: {
+        $subtract: [
+          { $arrayElemAt: ["$buyer.geolocation.coordinates", 0] },
+          { $arrayElemAt: ["$vendor.geolocation.coordinates", 0] }
+        ]
+      }
+    }
+  },
+  {
+    // Adiciona estimativa de distância (aproximação simples)
+    $addFields: {
+      estimatedDistanceKm: {
+        $multiply: [
+          {
+            $sqrt: {
+              $add: [
+                { $pow: ["$latDiff", 2] },
+                { $pow: ["$lonDiff", 2] }
+              ]
+            }
+          },
+          111 // Aproximadamente 111 km por grau
+        ]
+      }
+    }
+  },
+  {
+    // Agrupa para calcular a média
+    $group: {
+      _id: null,
+      averageDistance: { $avg: "$estimatedDistanceKm" },
+      totalTransactions: { $sum: 1 },
+      minDistance: { $min: "$estimatedDistanceKm" },
+      maxDistance: { $max: "$estimatedDistanceKm" },
+      transactions: {
+        $push: {
+          buyer: "$buyerName",
+          buyerCity: "$buyerCity",
+          vendor: "$vendorName",
+          vendorCity: "$vendorCity",
+          distance: "$estimatedDistanceKm"
+        }
+      }
+    }
+  }
+]).toArray();
+
+if (distanceAnalysis.length > 0) {
+  const stats = distanceAnalysis[0];
+  print(`✓ Análise de ${stats.totalTransactions} transações concluídas:`);
+  print(`  Distância Média: ${stats.averageDistance.toFixed(2)} km`);
+  print(`  Distância Mínima: ${stats.minDistance.toFixed(2)} km`);
+  print(`  Distância Máxima: ${stats.maxDistance.toFixed(2)} km`);
+  
+  print(`\n  Exemplos de transações:`);
+  stats.transactions.slice(0, 3).forEach(t => {
+    print(`    ${t.buyer} (${t.buyerCity}) ← ${t.vendor} (${t.vendorCity}): ${t.distance.toFixed(2)} km`);
+  });
+}
+
+// --- 16. Categoria mais vendida por área geográfica --- //
+
+print('\n--- CONSULTA 16: Categoria Mais Vendida por Região ---');
+// Define área geográfica (região Sudeste: SP, RJ, MG)
+const targetRegion = ["SP", "RJ", "MG"];
+
+print(`Analisando vendas na região: ${targetRegion.join(", ")}`);
+
+const categoryByRegion = db.orders.aggregate([
+  {
+    // Lookup para obter dados do comprador
+    $lookup: {
+      from: "users",
+      localField: "userId",
+      foreignField: "_id",
+      as: "buyer"
+    }
+  },
+  {
+    $unwind: "$buyer"
+  },
+  {
+    // Filtra apenas compradores da região especificada
+    $match: {
+      "buyer.address.State": { $in: targetRegion }
+    }
+  },
+  {
+    // Desconstrói produtos do pedido
+    $unwind: "$products"
+  },
+  {
+    // Lookup para obter dados do produto
+    $lookup: {
+      from: "products",
+      localField: "products.productId",
+      foreignField: "_id",
+      as: "productInfo"
+    }
+  },
+  {
+    $unwind: "$productInfo"
+  },
+  {
+    // Lookup para obter dados da categoria
+    $lookup: {
+      from: "categories",
+      localField: "productInfo.categoryId",
+      foreignField: "_id",
+      as: "category"
+    }
+  },
+  {
+    $unwind: "$category"
+  },
+  {
+    // Agrupa por categoria
+    $group: {
+      _id: "$category._id",
+      categoryName: { $first: "$category.name" },
+      totalQuantitySold: { $sum: "$products.quantity" },
+      totalRevenue: {
+        $sum: { $multiply: ["$products.quantity", "$products.price"] }
+      },
+      totalOrders: { $sum: 1 }
+    }
+  },
+  {
+    // Ordena por quantidade vendida
+    $sort: { totalQuantitySold: -1 }
+  }
+]).toArray();
+
+print(`✓ Categorias mais vendidas na região ${targetRegion.join(", ")}:`);
+categoryByRegion.forEach((category, index) => {
+  print(`  ${index + 1}. ${category.categoryName}:`);
+  print(`     Quantidade Vendida: ${category.totalQuantitySold} unidades`);
+  print(`     Receita Total: R$ ${category.totalRevenue.toFixed(2)}`);
+  print(`     Número de Pedidos: ${category.totalOrders}`);
+});
+
+if (categoryByRegion.length > 0) {
+  print(`\n  🏆 Categoria mais vendida: ${categoryByRegion[0].categoryName}`);
 }
 
 print('\n==============================================');
