@@ -612,6 +612,61 @@ print('--- Inserção de dados concluída com sucesso! ---');
 print(`Total inserido: ${userIds.length} usuários, ${categoryIds.length} categorias, ${productIds.length} produtos, ${orderIds.length} pedidos`);
 
 
+// --- Criação de Índices para Otimização --- //
+
+print('\n--- Criando índices para otimização de consultas ---');
+
+// Índice em products.categoryId
+// Justificativa: Consultas frequentes de produtos por categoria (ex: buscar todos os eletrônicos)
+// Cardinalidade média (5 categorias) e alta frequência de uso nas queries
+db.products.createIndex({ categoryId: 1 });
+print('✓ Índice criado em products.categoryId');
+
+// Índice em products.userId (vendedor)
+// Justificativa: Necessário para listar todos os produtos de um vendedor específico
+// Cardinalidade média (5 usuários vendedores) e importante para o painel do vendedor
+db.products.createIndex({ userId: 1 });
+print('✓ Índice criado em products.userId');
+
+// Índice em orders.userId (comprador)
+// Justificativa: Consulta de histórico de pedidos do usuário é operação comum
+// Alta seletividade e essencial para a experiência do usuário
+db.orders.createIndex({ userId: 1 });
+print('✓ Índice criado em orders.userId');
+
+// Índice em orders.status
+// Justificativa: Filtros por status (Pending, Shipped, etc) são usados em dashboards
+// Baixa cardinalidade (5 valores) mas alta frequência de consulta para gestão de pedidos
+db.orders.createIndex({ status: 1 });
+print('✓ Índice criado em orders.status');
+
+// Índice em orders.date (descendente)
+// Justificativa: Consultas por período e ordenação temporal são comuns em relatórios
+// Alta seletividade em queries com range e necessário para analytics
+db.orders.createIndex({ date: -1 });
+print('✓ Índice criado em orders.date (ordem descendente)');
+
+// Índice único em users.email
+// Justificativa: Login por email é operação crítica e emails devem ser únicos
+// Previne duplicatas e otimiza autenticação (operação de alta frequência)
+db.users.createIndex({ email: 1 }, { unique: true });
+print('✓ Índice único criado em users.email');
+
+// Índice geoespacial em users.geolocation
+// Justificativa: Permite queries de proximidade (ex: usuários ou produtos próximos)
+// Essencial para funcionalidades baseadas em localização
+db.users.createIndex({ geolocation: "2dsphere" });
+print('✓ Índice geoespacial (2dsphere) criado em users.geolocation');
+
+// Índice em categories.name
+// Justificativa: Busca de categoria por nome é operação frequente nas consultas
+// Alta seletividade (nomes únicos) e melhora performance de lookups
+db.categories.createIndex({ name: 1 });
+print('✓ Índice criado em categories.name');
+
+print('--- Criação de índices concluída! ---\n');
+
+
 // --- Consultas Sprint 1 --- //
 
 print('\n==============================================');
@@ -788,3 +843,4 @@ print('\n==============================================');
 print('===     CONSULTAS CONCLUÍDAS COM SUCESSO   ===');
 print('==============================================\n');
 
+void 0;
