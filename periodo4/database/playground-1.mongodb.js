@@ -839,8 +839,184 @@ if (productsForUpdate.length >= 2) {
   print("Não há produtos suficientes no banco para realizar a atualização.");
 }
 
+// --- 5. Calcular a média de avaliação por produto --- //
+
+print('\n--- CONSULTA 5: Média de Avaliação por Produto ---');
+// Usa $unwind para "desnormalizar" o array de ratings e calcular a média por produto
+const avgRatingsResult = db.products.aggregate([
+  {
+    // Desconstrói o array de ratings para processar cada avaliação individualmente
+    $unwind: "$ratings"
+  },
+  {
+    // Agrupa por produto e calcula a média das avaliações
+    $group: {
+      _id: "$_id",
+      productName: { $first: "$name" },
+      averageRating: { $avg: "$ratings.rating" },
+      totalRatings: { $sum: 1 }
+    }
+  },
+  {
+    // Ordena por média de avaliação (maior primeiro)
+    $sort: { averageRating: -1 }
+  }
+]).toArray();
+
+print(`Total de produtos com avaliações: ${avgRatingsResult.length}`);
+avgRatingsResult.forEach(product => {
+  print(`  ${product.productName}: ${product.averageRating.toFixed(2)} estrelas (${product.totalRatings} avaliações)`);
+});
+
+// --- 6. Calcular o total de vendas por categoria --- //
+
+print('\n--- CONSULTA 6: Total de Vendas por Categoria ---');
+// Junta orders com products e depois agrupa por categoria
+const salesByCategoryResult = db.orders.aggregate([
+  {
+    // Desconstrói o array de produtos do pedido
+    $unwind: "$products"
+  },
+  {
+    // Lookup para obter informações do produto (incluindo categoryId)
+    $lookup: {
+      from: "products",
+      localField: "products.productId",
+      foreignField: "_id",
+      as: "productInfo"
+    }
+  },
+  {
+    // Desconstrói o resultado do lookup
+    $unwind: "$productInfo"
+  },
+  {
+    // Lookup para obter o nome da categoria
+    $lookup: {
+      from: "categories",
+      localField: "productInfo.categoryId",
+      foreignField: "_id",
+      as: "categoryInfo"
+    }
+  },
+  {
+    // Desconstrói o resultado do lookup de categoria
+    $unwind: "$categoryInfo"
+  },
+  {
+    // Agrupa por categoria e calcula o total de vendas
+    $group: {
+      _id: "$categoryInfo._id",
+      categoryName: { $first: "$categoryInfo.name" },
+      totalSales: { 
+        $sum: { 
+          $multiply: ["$products.quantity", "$products.price"] 
+        } 
+      },
+      totalOrders: { $sum: 1 },
+      totalItemsSold: { $sum: "$products.quantity" }
+    }
+  },
+  {
+    // Ordena por total de vendas (maior primeiro)
+    $sort: { totalSales: -1 }
+  }
+]).toArray();
+
+print(`Total de categorias com vendas: ${salesByCategoryResult.length}`);
+salesByCategoryResult.forEach(category => {
+  print(`  ${category.categoryName}:`);
+  print(`    Receita Total: R$ ${category.totalSales.toFixed(2)}`);
+  print(`    Pedidos: ${category.totalOrders}`);
+  print(`    Itens Vendidos: ${category.totalItemsSold}`);
+});
+
+// --- 7. Relatórios de vendas por vendedor --- //
+
+print('\n--- CONSULTA 7: Relatório de Vendas por Vendedor ---');
+// Agrupa vendas por vendedor (userId no product)
+const salesByVendorResult = db.orders.aggregate([
+  {
+    // Desconstrói o array de produtos do pedido
+    $unwind: "$products"
+  },
+  {
+    // Lookup para obter informações do produto (incluindo vendedor)
+    $lookup: {
+      from: "products",
+      localField: "products.productId",
+      foreignField: "_id",
+      as: "productInfo"
+    }
+  },
+  {
+    // Desconstrói o resultado do lookup
+    $unwind: "$productInfo"
+  },
+  {
+    // Lookup para obter informações do vendedor
+    $lookup: {
+      from: "users",
+      localField: "productInfo.userId",
+      foreignField: "_id",
+      as: "vendorInfo"
+    }
+  },
+  {
+    // Desconstrói o resultado do lookup de vendedor
+    $unwind: "$vendorInfo"
+  },
+  {
+    // Agrupa por vendedor e calcula métricas de vendas
+    $group: {
+      _id: "$vendorInfo._id",
+      vendorName: { $first: "$vendorInfo.name" },
+      totalRevenue: { 
+        $sum: { 
+          $multiply: ["$products.quantity", "$products.price"] 
+        } 
+      },
+      totalQuantitySold: { $sum: "$products.quantity" },
+      totalOrders: { $sum: 1 },
+      productsSold: { 
+        $addToSet: "$productInfo.name" 
+      }
+    }
+  },
+  {
+    // Adiciona campo com contagem de produtos únicos vendidos
+    $addFields: {
+      uniqueProductsSold: { $size: "$productsSold" }
+    }
+  },
+  {
+    // Ordena por receita total (maior primeiro)
+    $sort: { totalRevenue: -1 }
+  },
+  {
+    // Remove o array de produtos para limpeza do output
+    $project: {
+      vendorName: 1,
+      totalRevenue: 1,
+      totalQuantitySold: 1,
+      totalOrders: 1,
+      uniqueProductsSold: 1
+    }
+  }
+]).toArray();
+
+print(`Total de vendedores com vendas: ${salesByVendorResult.length}`);
+salesByVendorResult.forEach(vendor => {
+  print(`  ${vendor.vendorName}:`);
+  print(`    Receita Total: R$ ${vendor.totalRevenue.toFixed(2)}`);
+  print(`    Quantidade Vendida: ${vendor.totalQuantitySold} unidades`);
+  print(`    Pedidos Atendidos: ${vendor.totalOrders}`);
+  print(`    Produtos Únicos Vendidos: ${vendor.uniqueProductsSold}`);
+});
+
 print('\n==============================================');
 print('===     CONSULTAS CONCLUÍDAS COM SUCESSO   ===');
 print('==============================================\n');
 
+// Script concluído - sem retorno no painel de resultados
 void 0;
