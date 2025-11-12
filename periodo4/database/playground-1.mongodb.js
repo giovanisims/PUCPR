@@ -788,5 +788,3 @@ print('\n==============================================');
 print('===     CONSULTAS CONCLUÍDAS COM SUCESSO   ===');
 print('==============================================\n');
 
-// Retorna um resumo final para o Playground mostrar no painel de resultados
-db.orders.countDocuments();
