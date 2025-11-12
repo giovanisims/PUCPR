@@ -60,8 +60,7 @@ db.createCollection("users", {
                             bsonType: "array",
                             description: "Deve ser um array de [longitude, latitude]",
                             minItems: 2,
-                            maxItems: 2,
-                            items: { bsonType: "double" }
+                            maxItems: 2
                         }
                     }
                 },
@@ -375,7 +374,7 @@ const productsResult = db.products.insertMany([
         name: "Premium Laptop",
         description: "High-performance laptop with 16GB RAM and 512GB SSD",
         price: 3500.00,
-        quantity: 15,
+        quantity: NumberInt(15),
         Location: "Curitiba - PR",
         categoryId: categoryIds[0], // Electronics
         userId: userIds[0], // João Silva (vendedor)
@@ -399,7 +398,7 @@ const productsResult = db.products.insertMany([
         name: "Classic Fiction Novel",
         description: "Bestselling fiction book of the year",
         price: 45.90,
-        quantity: 50,
+        quantity: NumberInt(50),
         Location: "São Paulo - SP",
         categoryId: categoryIds[1], // Books
         userId: userIds[1], // Maria Santos (vendedor)
@@ -416,7 +415,7 @@ const productsResult = db.products.insertMany([
         name: "Sports Running Shoes",
         description: "Comfortable running shoes for all terrains",
         price: 299.90,
-        quantity: 30,
+        quantity: NumberInt(30),
         Location: "Belo Horizonte - MG",
         categoryId: categoryIds[4], // Sports
         userId: userIds[2], // Pedro Oliveira (vendedor)
@@ -440,7 +439,7 @@ const productsResult = db.products.insertMany([
         name: "Wooden Coffee Table",
         description: "Elegant wooden coffee table with modern design",
         price: 850.00,
-        quantity: 8,
+        quantity: NumberInt(8),
         Location: "Salvador - BA",
         categoryId: categoryIds[3], // Home & Garden
         userId: userIds[3], // Ana Costa (vendedor)
@@ -457,7 +456,7 @@ const productsResult = db.products.insertMany([
         name: "Cotton T-Shirt",
         description: "100% cotton comfortable t-shirt",
         price: 59.90,
-        quantity: 100,
+        quantity: NumberInt(100),
         Location: "Rio de Janeiro - RJ",
         categoryId: categoryIds[2], // Clothing
         userId: userIds[4], // Carlos Mendes (vendedor)
@@ -480,7 +479,7 @@ const productsResult = db.products.insertMany([
         name: "Smartphone Pro Max",
         description: "Latest smartphone with advanced camera system",
         price: 4500.00,
-        quantity: 20,
+        quantity: NumberInt(20),
         Location: "Curitiba - PR",
         categoryId: categoryIds[0], // Electronics
         userId: userIds[0], // João Silva (vendedor)
@@ -490,7 +489,7 @@ const productsResult = db.products.insertMany([
         name: "Academic Physics Book",
         description: "Comprehensive physics textbook for university students",
         price: 180.00,
-        quantity: 25,
+        quantity: NumberInt(25),
         Location: "São Paulo - SP",
         categoryId: categoryIds[1], // Books
         userId: userIds[1], // Maria Santos (vendedor)
@@ -516,7 +515,7 @@ const ordersResult = db.orders.insertMany([
         products: [
             {
                 productId: productIds[0], // Premium Laptop
-                quantity: 1,
+                quantity: NumberInt(1),
                 price: 3500.00
             }
         ],
@@ -529,12 +528,12 @@ const ordersResult = db.orders.insertMany([
         products: [
             {
                 productId: productIds[1], // Classic Fiction Novel
-                quantity: 2,
+                quantity: NumberInt(2),
                 price: 45.90
             },
             {
                 productId: productIds[4], // Cotton T-Shirt
-                quantity: 3,
+                quantity: NumberInt(3),
                 price: 59.90
             }
         ],
@@ -547,7 +546,7 @@ const ordersResult = db.orders.insertMany([
         products: [
             {
                 productId: productIds[2], // Sports Running Shoes
-                quantity: 1,
+                quantity: NumberInt(1),
                 price: 299.90
             }
         ],
@@ -560,12 +559,12 @@ const ordersResult = db.orders.insertMany([
         products: [
             {
                 productId: productIds[0], // Premium Laptop
-                quantity: 1,
+                quantity: NumberInt(1),
                 price: 3500.00
             },
             {
                 productId: productIds[5], // Smartphone Pro Max
-                quantity: 1,
+                quantity: NumberInt(1),
                 price: 4500.00
             }
         ],
@@ -578,7 +577,7 @@ const ordersResult = db.orders.insertMany([
         products: [
             {
                 productId: productIds[3], // Wooden Coffee Table
-                quantity: 1,
+                quantity: NumberInt(1),
                 price: 850.00
             }
         ],
@@ -591,12 +590,12 @@ const ordersResult = db.orders.insertMany([
         products: [
             {
                 productId: productIds[6], // Academic Physics Book
-                quantity: 1,
+                quantity: NumberInt(1),
                 price: 180.00
             },
             {
                 productId: productIds[1], // Classic Fiction Novel
-                quantity: 1,
+                quantity: NumberInt(1),
                 price: 45.90
             }
         ],
