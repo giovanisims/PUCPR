@@ -1014,6 +1014,183 @@ salesByVendorResult.forEach(vendor => {
   print(`    Produtos Únicos Vendidos: ${vendor.uniqueProductsSold}`);
 });
 
+// --- 8. Adicionar promoção temporária a um produto --- //
+
+print('\n--- CONSULTA 8: Adicionar Promoção Temporária ---');
+// Seleciona um produto para aplicar desconto
+const productForPromo = db.products.findOne({ name: "Premium Laptop" });
+
+if (productForPromo) {
+  // Adiciona campo de promoção com desconto de 15% válido por 30 dias
+  const promoResult = db.products.updateOne(
+    { _id: productForPromo._id },
+    {
+      $set: {
+        promotion: {
+          discountPercent: 15,
+          startDate: new Date(),
+          endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 dias a partir de hoje
+          active: true
+        }
+      }
+    }
+  );
+  
+  const priceWithDiscount = productForPromo.price * (1 - 15/100);
+  print(`✓ Promoção adicionada ao produto: ${productForPromo.name}`);
+  print(`  Preço Original: R$ ${productForPromo.price.toFixed(2)}`);
+  print(`  Preço com Desconto: R$ ${priceWithDiscount.toFixed(2)}`);
+  print(`  Válida até: ${new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}`);
+}
+
+// --- 9. Buscar produtos com promoções ativas --- //
+
+print('\n--- CONSULTA 9: Produtos com Promoções Ativas ---');
+// Busca produtos que têm promoção ativa e dentro do período válido
+const productsWithPromo = db.products.find({
+  "promotion.active": true,
+  "promotion.startDate": { $lte: new Date() },
+  "promotion.endDate": { $gte: new Date() }
+}).toArray();
+
+print(`Total de produtos em promoção: ${productsWithPromo.length}`);
+productsWithPromo.forEach(product => {
+  const discountedPrice = product.price * (1 - product.promotion.discountPercent/100);
+  print(`  ${product.name}:`);
+  print(`    Desconto: ${product.promotion.discountPercent}%`);
+  print(`    De R$ ${product.price.toFixed(2)} por R$ ${discountedPrice.toFixed(2)}`);
+});
+
+// --- 10. Atualizar pontos de fidelidade após compra --- //
+
+print('\n--- CONSULTA 10: Atualizar Pontos de Fidelidade ---');
+// Busca um pedido recente e adiciona pontos ao usuário
+const recentOrder = db.orders.findOne({ status: "Delivered" });
+
+if (recentOrder) {
+  const userBefore = db.users.findOne({ _id: recentOrder.userId });
+  
+  // Adiciona os pontos gerados pela compra ao saldo do usuário
+  db.users.updateOne(
+    { _id: recentOrder.userId },
+    { $inc: { fidelityPoints: recentOrder.generatedPoints } }
+  );
+  
+  const userAfter = db.users.findOne({ _id: recentOrder.userId });
+  
+  print(`✓ Pontos atualizados para usuário: ${userAfter.name}`);
+  print(`  Pontos Antes: ${userBefore.fidelityPoints}`);
+  print(`  Pontos Ganhos: ${recentOrder.generatedPoints}`);
+  print(`  Pontos Depois: ${userAfter.fidelityPoints}`);
+}
+
+// --- 11. Aplicar desconto usando pontos de fidelidade --- //
+
+print('\n--- CONSULTA 11: Usar Pontos como Desconto ---');
+// Simula uso de pontos (1 ponto = R$ 0.10 de desconto)
+const userWithPoints = db.users.findOne({ fidelityPoints: { $gte: 100 } });
+
+if (userWithPoints) {
+  const pointsToUse = 100;
+  const discountValue = pointsToUse * 0.10; // 1 ponto = R$ 0.10
+  
+  print(`Cliente: ${userWithPoints.name}`);
+  print(`  Pontos Disponíveis: ${userWithPoints.fidelityPoints}`);
+  print(`  Pontos a Usar: ${pointsToUse}`);
+  print(`  Desconto Gerado: R$ ${discountValue.toFixed(2)}`);
+  print(`  Pontos Restantes: ${userWithPoints.fidelityPoints - pointsToUse}`);
+  
+  // Deduz os pontos utilizados
+  db.users.updateOne(
+    { _id: userWithPoints._id },
+    { $inc: { fidelityPoints: -pointsToUse } }
+  );
+  print(`✓ Pontos deduzidos com sucesso!`);
+}
+
+// --- 12. Vendedor responde a uma avaliação --- //
+
+print('\n--- CONSULTA 12: Responder Avaliação ---');
+// Encontra um produto com avaliação sem resposta do vendedor
+const productWithUnrepliedRating = db.products.findOne({
+  "ratings": {
+    $elemMatch: {
+      review: { $exists: true },
+      vendorReply: { $exists: false }
+    }
+  }
+});
+
+if (productWithUnrepliedRating) {
+  // Adiciona resposta do vendedor à primeira avaliação sem resposta
+  const ratingIndex = productWithUnrepliedRating.ratings.findIndex(
+    r => r.review && !r.vendorReply
+  );
+  
+  if (ratingIndex !== -1) {
+    const vendorReply = "Obrigado pelo seu feedback! Estamos sempre buscando melhorar.";
+    
+    db.products.updateOne(
+      { 
+        _id: productWithUnrepliedRating._id,
+        "ratings.userId": productWithUnrepliedRating.ratings[ratingIndex].userId
+      },
+      {
+        $set: {
+          "ratings.$.vendorReply": vendorReply
+        }
+      }
+    );
+    
+    print(`✓ Resposta adicionada à avaliação do produto: ${productWithUnrepliedRating.name}`);
+    print(`  Avaliação Original: "${productWithUnrepliedRating.ratings[ratingIndex].review}"`);
+    print(`  Resposta do Vendedor: "${vendorReply}"`);
+  }
+}
+
+// --- 13. Buscar produtos por proximidade (geolocalização) --- //
+
+print('\n--- CONSULTA 13: Buscar Produtos por Proximidade ---');
+// Busca produtos próximos a um usuário específico (usando localização do vendedor)
+const referenceUser = db.users.findOne({ name: "João Silva" });
+
+if (referenceUser && referenceUser.geolocation) {
+  const searchRadiusKm = 500; 
+  const searchRadiusMeters = searchRadiusKm * 1000;
+  
+  print(`Buscando produtos em um raio de ${searchRadiusKm} km de ${referenceUser.address.City}, ${referenceUser.address.State}`);
+  print(`Coordenadas de referência: [${referenceUser.geolocation.coordinates}]`);
+  
+  // Busca vendedores próximos usando geolocalização
+  const nearbyVendors = db.users.find({
+    geolocation: {
+      $near: {
+        $geometry: referenceUser.geolocation,
+        $maxDistance: searchRadiusMeters
+      }
+    }
+  }).toArray();
+  
+  // Busca produtos desses vendedores
+  const vendorIds = nearbyVendors.map(v => v._id);
+  const nearbyProducts = db.products.find({
+    userId: { $in: vendorIds }
+  }).toArray();
+  
+  print(`✓ Encontrados ${nearbyProducts.length} produtos de ${nearbyVendors.length} vendedores próximos:`);
+  
+  // Agrupa produtos por vendedor para melhor visualização
+  nearbyVendors.forEach(vendor => {
+    const vendorProducts = nearbyProducts.filter(p => p.userId.equals(vendor._id));
+    if (vendorProducts.length > 0) {
+      print(`  ${vendor.name} (${vendor.address.City}, ${vendor.address.State}):`);
+      vendorProducts.forEach(product => {
+        print(`    - ${product.name} (R$ ${product.price.toFixed(2)})`);
+      });
+    }
+  });
+}
+
 print('\n==============================================');
 print('===     CONSULTAS CONCLUÍDAS COM SUCESSO   ===');
 print('==============================================\n');
