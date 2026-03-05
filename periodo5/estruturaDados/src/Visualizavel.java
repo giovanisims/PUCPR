@@ -1,0 +1,4 @@
+public interface Visualizavel {
+
+    abstract String Visualizar();
+}
