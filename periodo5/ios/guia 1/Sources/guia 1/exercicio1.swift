@@ -1,3 +1,4 @@
+
 func exercicio1() {
     let nome = "Giovani"
     var idade = 18
