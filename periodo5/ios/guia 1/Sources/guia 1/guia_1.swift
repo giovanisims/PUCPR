@@ -11,6 +11,7 @@ struct guia_1 {
         // exercicio6()
         // exercicio7()
         // exercicio8()
-        exercicio9()
+        // exercicio9()
+        exercicio10()
     }
 }
