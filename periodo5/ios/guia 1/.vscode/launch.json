@@ -1,0 +1,44 @@
+{
+    "configurations": [
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:guia 1}",
+            "name": "Debug guia 1",
+            "target": "guia 1",
+            "configuration": "debug",
+            "preLaunchTask": "swift: Build Debug guia 1"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:guia 1}",
+            "name": "Release guia 1",
+            "target": "guia 1",
+            "configuration": "release",
+            "preLaunchTask": "swift: Build Release guia 1"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:guia 1}",
+            "name": "Debug exercicio1",
+            "target": "exercicio1",
+            "configuration": "debug",
+            "preLaunchTask": "swift: Build Debug exercicio1"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:guia 1}",
+            "name": "Release exercicio1",
+            "target": "exercicio1",
+            "configuration": "release",
+            "preLaunchTask": "swift: Build Release exercicio1"
+        }
+    ]
+}
