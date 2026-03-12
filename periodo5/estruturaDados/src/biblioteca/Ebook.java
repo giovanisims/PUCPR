@@ -1,3 +1,5 @@
+package biblioteca;
+
 public class Ebook extends ItemBibliotecaDigital implements Baixavel{
     Ebook(String titulo, String autor) {
         super(titulo, autor);

@@ -1,3 +1,5 @@
+package biblioteca;
+
 public class VideoDigital extends ItemBibliotecaDigital implements Baixavel, Visualizavel{
 
     VideoDigital(String titulo, String autor) {
