@@ -11,9 +11,17 @@ public class ArrayList<T> {
     protected void add(int index, T e) {}
     protected void remove(int index) {}
     protected void remove(T o) {}
-    protected T set(int index, T e) {return null;}
-    protected T get(int index) {return null;}
-    protected boolean contains(T o) {return false;}
-    protected int indexOf(T o) {return 0;}
-    protected T[] toArray() {return data;}
+    protected void set(int index, T e) { data[index] = e; }
+    protected T get(int index) { return data[index]; }
+
+    protected boolean contains(T o) {
+        for (T element : data) {
+            if (o != null && o.equals(element)) {return true;}} return false;
+    }
+
+    protected int indexOf(T o) {
+        for (int index = 0; index < data.length; index++) { if (o != null && o.equals(data[index])) { return index; }} return -1;
+    }
+
+    protected T[] toArray() { return data; }
 }
