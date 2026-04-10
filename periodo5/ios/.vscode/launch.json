@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:ios}/guia 2",
+            "name": "Debug guia 2 (guia 2)",
+            "target": "guia 2",
+            "configuration": "debug",
+            "preLaunchTask": "swift: Build Debug guia 2 (guia 2)"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:ios}/guia 2",
+            "name": "Release guia 2 (guia 2)",
+            "target": "guia 2",
+            "configuration": "release",
+            "preLaunchTask": "swift: Build Release guia 2 (guia 2)"
+        }
+    ]
+}
