@@ -1,37 +1,17 @@
-Projeto 1: Monitoramento de Temperatura em Ambientes IoT
+```mermaid
+flowchart TD
+    subgraph Cliente ["<b>Cliente (Sensor)</b>"]
+        A["Dado Original em Texto Puro<br><i>(Ex: 'Sensor-1234|25')</i>"] --> C{"<b>Processo de Criptografia</b><br><i>(Fernet - AES-CBC)</i>"}
+        B[("<b>Segredo</b><br><i>(secret.key)</i>")] -->|Lido via secrets_manager.py| C
+        C -->|Adiciona Elementos Auxiliares:<br>IV Aleatório e Timestamp| D["<b>Dados Criptografados</b><br><i>(Payload em Bytes)</i>"]
+    end
 
-Descrição: Sensores de temperatura (clientes) enviam leituras periódicas para um servidor central, que armazena os dados e permite consultas em tempo real.
+    D -->|Envio Simétrico via Socket TCP/IP| E
 
-Requisitos: Cada cliente simula um sensor e envia dados com um timestamp. O servidor deve aceitar múltiplas conexões simultâneas e registrar os dados.
-Um cliente especial (painel de controle) pode consultar a média de temperatura por sensor. 
-
-# ========== Cryptography Implementation ==========
-
-The application was updated with symmetric cryptography (using Python's `cryptography` library and the Fernet algorithm, based on AES in CBC mode) between the client (sensor) and the server:
-
-1. **Secrets Management:**
-   * A `secrets_manager.py` file is responsible for reading and generating the session key (`secret.key`). 
-   * If the `secret.key` file does not exist on the machine where the code is executed, it's automatically generated.
-   * Because it's symmetric cryptography, both client (sensor) and server share the same key, read locally from the filesystem.
-
-2. **Cryptography Flow:**
-   * The sensor formats its data in plain text (e.g., `Sensor-1234|25`).
-   * The `Fernet` instance (loaded with the secret) encrypts this data into a secure byte sequence.
-   * These encrypted bytes are sent through the socket and received by the server.
-   * The server detects it's a client port (different from the admin panel's 10000 port) and uses `.decrypt` from the `Fernet` object to decrypt the payload.
-   * Upon successful decryption, the string is processed normally to calculate temperature averages.
-   * The server's response message to the client remains in plain text for simplicity in this implementation.
-   * The admin panel connects over a static local port (`10000`) to send status requests in plain text, bypassing the decryption protocol as it is treated as a trusted local process.
-
-Note: Install the dependencies: `pip install cryptography`
-
-# ========== Multithreading ==========  
-
-## Quando usar Threads?
-
-1.  Quando for vantajoso executar partes de um programa (funções) em paralelo.
-2.  Quando for necessário compartilhar variáveis entre as funções que rodam em paralelo.
-3.  Quando for necessário criar dinamicamente muitas vezes a mesma instância de uma função.
-    * Dependendo do sistema, criar uma Thread pode ser de 10 a 100 vezes mais rápido que criar um processo.
-    
-# Use CTRL+C to end any running process
+    subgraph Servidor ["<b>Servidor Central</b>"]
+        E["<b>Recepção dos Dados (Bytes)</b>"] --> F{"<b>Processo de Descriptografia e Validação</b><br><i>(Fernet.decrypt)</i>"}
+        G[("<b>Segredo Local Compartilhado</b><br><i>(secret.key)</i>")] -->|Lido via secrets_manager.py| F
+        F -->|Falha na Validação| H["Descarte/Erro<br><i>(Adulteração Detectada)</i>"]
+        F -->|Sucesso na Validação| I["<b>Dado Original Restaurado</b><br><i>(Processamento no dicionário e cálculo de médias)</i>"]
+    end
+```
