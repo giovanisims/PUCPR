@@ -20,8 +20,8 @@ def start_client(sensor_name):
         print(f"{sensor_name}: connected to server at: {host}:{port}")
 
         while True:
-            current_temperature = random.randint(15, 30)
-            message = f"{sensor_name}|{current_temperature}"
+            access_code = random.randint(1000, 9999)
+            message = f"{sensor_name}|{access_code}"
 
             # The send function expects bytes so we encode it
             # UTF-8 (or 16 if we just wanna waste bandwith) works with everything but is a little slower
@@ -32,7 +32,7 @@ def start_client(sensor_name):
             encrypted_message = cipher.encrypt(message.encode('utf-8'))
             
             client_socket.send(encrypted_message)
-            print(f"{sensor_name} successfully sent this OVERT temperature: {current_temperature}°C")
+            print(f"{sensor_name} successfully sent this OVERT access code: {access_code}")
             print(f"{sensor_name} sent this ENCRYPTED data: {encrypted_message}")
 
             # You use recv to receive responses for TCP and recvfrom for UDP dont know why

@@ -21,7 +21,7 @@ def start_admin_panel():
             option = input('''
 ========== Control Panel ==========
 [1] - See active sensors
-[2] - Temperature averages for each sensor
+[2] - Last access code for each sensor
 [3] - Quit
 ===================================
 ''')

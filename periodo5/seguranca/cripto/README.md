@@ -1,7 +1,7 @@
 ```mermaid
 flowchart TD
-    subgraph Cliente [Cliente - Sensor]
-        A[Dado Original em Texto Puro] --> C{Processo de Criptografia - Fernet}
+    subgraph Cliente [Cliente - Leitor/Sensor]
+        A["Dado Original em Texto Puro - Ex: Sensor-1|1234"] --> C{Processo de Criptografia - Fernet}
         B[(Segredo - secret.key)] -->|Lido via secrets_manager.py| C
         C -->|Adiciona IV Aleatorio e Timestamp| D[Dados Criptografados - Bytes]
     end

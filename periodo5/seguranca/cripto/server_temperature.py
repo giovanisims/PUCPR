@@ -21,7 +21,6 @@ so I'm kinda confused, whatever threads are weird in python), so that's why I'm 
 '''
 data_lock = threading.Lock()
 
-# Instantiate cipher using shared secrets_manager file
 cipher = get_cipher()
 
 def handle_client(client_socket, address):
@@ -56,18 +55,19 @@ def handle_client(client_socket, address):
                             for sensor_name in SENSORS:
                                 response += f"{sensor_name} running\n"
                     case "2":
-                        print(f"Sending average temperatures per socket")
+                        print(f"Sending last access code per socket")
                         with data_lock:
                             if not SENSORS:
-                                response += "Please wait a second and let the system gather more data"
+                                response += "No sensors have connected yet."
                             else:
                                 for sensor_name in SENSORS:
-                                    temps = SENSOR_TEMPS[sensor_name]
-                                    if len(temps) > 1:
-                                        avg_temp = (sum(temps) / len(temps))
-                                        response += f"{sensor_name}: {(avg_temp):.0f}°C or {(avg_temp * 9/5 + 32):.0f}°F \n"
+                                    codes = SENSOR_TEMPS[sensor_name]
+                                    if len(codes) > 0:
+                                        # Get the most recent access code (the last one appended to the deque)
+                                        last_code = codes[-1]
+                                        response += f"{sensor_name}: Last access code used was {last_code}\n"
                                     else:
-                                        response += f"{sensor_name}: Please wait a second and let the system gather more data \n"
+                                        response += f"{sensor_name}: No codes received yet \n"
             else:
                 try:
                     # Decrypt the message
@@ -79,21 +79,21 @@ def handle_client(client_socket, address):
                         print(f"Decryption failed: {crypt_err}")
                         break
 
-                    sensor_name, temperature_str = message.split('|', 1)
-                    temperature = int(temperature_str)
+                    sensor_name, access_code_str = message.split('|', 1)
+                    access_code = int(access_code_str)
                     current_sensor_name = sensor_name
                     
                     
                     # Here I'm using the lock because it can mess things up if the threads race each other and end up inserting duplicate sensor names then,
-                    # it accesses the temperature dict, if it fails defaultdict creates the appropriate key, if it succeeds it adds the most recent temp reading
+                    # it accesses the dictionary, if it fails defaultdict creates the appropriate key, if it succeeds it adds the most recent access code
                     with data_lock:
                         if sensor_name not in SENSORS:
                             SENSORS.append(sensor_name)
-                        SENSOR_TEMPS[sensor_name].append(temperature)
+                        SENSOR_TEMPS[sensor_name].append(access_code)
                     
-                    response = f"Temperature received: \"{temperature}\" From socket: {address_str}"
+                    response = f"Access code received: \"{access_code}\" From socket: {address_str}"
                 except ValueError:
-                    response = f"Temperature received: \"{message}\" From socket: {address_str}"
+                    response = f"Access code received: \"{message}\" From socket: {address_str}"
                     if (client_port not in SENSORS) and (client_port != 10000):
                         SENSORS.append(client_port)
                     # Use a decoded message if it was an unencrypted payload somehow
@@ -101,7 +101,7 @@ def handle_client(client_socket, address):
                         temp_list.append(int(message))
 
 
-            # print(f"this is the average temp: {(total_temp / len(temp_list)):.0f} On the sensor at socket: {address_str}")
+            # print(f"this is the access code: {temp_list[-1]} On the sensor at socket: {address_str}")
 
             client_socket.send(response.encode('utf-8'))
     except Exception as e:
