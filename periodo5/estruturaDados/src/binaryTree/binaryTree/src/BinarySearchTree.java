@@ -1,14 +1,6 @@
-public class BinarySearch<T extends Comparable<T>> {
-
-    private static class Node<T> {
-        T value;
-        Node<T> left, right;
-        Node(T value) {this.value = value;}
-    }
+public class BinarySearchTree<T extends Comparable<T>> {
 
     private Node<T> root;
-
-
 
     public void Insert(T value) { root = insertRecursive(root, value); }
 

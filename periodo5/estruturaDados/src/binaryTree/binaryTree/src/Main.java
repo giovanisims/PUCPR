@@ -3,7 +3,7 @@ public class Main {
 
 
         System.out.println("--- Integer Tree ---");
-        BinarySearch<Integer> intTree = new BinarySearch<>();
+        BinarySearchTree<Integer> intTree = new BinarySearchTree<>();
         intTree.Insert(50);
         intTree.Insert(30);
         intTree.Insert(70);
@@ -17,7 +17,7 @@ public class Main {
         System.out.println();
 
         System.out.println("--- String Tree ---");
-        BinarySearch<String> stringTree = new BinarySearch<>();
+        BinarySearchTree<String> stringTree = new BinarySearchTree<>();
         stringTree.Insert("Banana");
         stringTree.Insert("Apple");
         stringTree.Insert("Cherry");
@@ -26,7 +26,7 @@ public class Main {
         System.out.println(stringTree);
 
         System.out.println("--- Double Tree ---");
-        BinarySearch<Double> doubleTree = new BinarySearch<>();
+        BinarySearchTree<Double> doubleTree = new BinarySearchTree<>();
         doubleTree.Insert(10.5);
         doubleTree.Insert(5.2);
         doubleTree.Insert(15.7);
